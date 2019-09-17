@@ -1,0 +1,362 @@
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px;
+    height: 100vh;
+    line-height: 1;
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+    grid-template-rows: 8% 35% auto 10%;
+    grid-gap: 0px;
+    grid-template-areas: 
+        "header header"
+        "aside  barcode"
+        "aside  barcode"
+        "aside barcode"
+}
+
+header {
+    grid-area: header;
+    background: #F5F5F5;
+    border-bottom: 1px solid #789;
+}
+
+aside { 
+    grid-area: aside;
+}
+
+.barcode-display {
+    grid-area: barcode;
+}
+
+.config-option-row {
+    grid-area: aside;
+    display: grid;
+    grid-auto-columns: repeat(auto ,3);
+    grid-template-areas: 
+        "select button button"
+}
+.config-option-radio-btn{
+    grid-area: select;
+}
+.config-option-btn{
+    grid-area: button;
+}
+ul{
+    list-style-type: none;
+}
+#myUL {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: 30rem;
+    width: 28rem;
+    border: 1px solid transparent;
+}
+
+.tree-view {
+    background-color: #F5F5F5;
+    min-height: 300px !important;
+}
+
+.scrollbar {
+    height: 300px;
+    background: #F5F5F5;
+    overflow-y: scroll;
+}
+
+.scrollbar-barcode {
+    height: 100vh;
+    overflow-y: scroll;
+    background-color: white;
+}
+
+.force-overflow {
+    min-height: 450px;
+}
+
+
+.caret,
+.nested li {
+    -webkit-user-select: none;
+    /* Safari 3.1+ */
+    -moz-user-select: none;
+    /* Firefox 2+ */
+    -ms-user-select: none;
+    /* IE 10+ */
+    user-select: none;
+}
+
+li {
+    font-weight: 400;
+    cursor: pointer;
+    color: #444;
+}
+
+li:hover {
+    color: #0af;
+}
+
+li.active {
+    font-weight: bold;
+}
+
+.caret::before {
+    content: url('./images/arrow.png');
+    color: black;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.caret-down::before {
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.nested {
+    display: none;
+}
+
+.active-tree-view {
+    display: block;
+}
+
+.config-row {
+    margin: 0px;
+    border: #0af solid transparent;
+}
+
+
+#code-selection {
+    border: none;
+    display: block;
+    cursor: pointer;
+    font-weight: 300;
+    color: rgb(26, 57, 88);
+    width: 100%;
+    height: 3rem;
+    border: 1px solid #eaeaea;
+    outline: none;
+}
+
+#code-selection:hover {
+    border-color: #789;
+}
+
+#code-selection:focus {
+    border-color: #4d90fe;
+}
+
+.reset-button,
+.function-button {
+    height: 3rem;
+    width: fit-content;
+}
+
+#barcode-display-1D {
+    text-align: center;
+}
+
+#barcode-display-datamatrix,
+#barcode-display-allInOne {
+    text-align: center;
+    display: block;
+}
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    transition: 0.4s;
+}
+
+.activeAccordion,
+.accordion:hover {
+    background-color: #ccc;
+}
+
+.accordion:after {
+    content: '\002B';
+    color: #777;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.activeAccordion:after {
+    content: "\2212";
+}
+
+.panel {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.select {
+    border: none;
+    display: block;
+    cursor: pointer;
+    color: rgb(26, 57, 88);
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+    height: 3rem;
+    border: 1px solid #eaeaea;
+    outline: none;
+}
+
+.select:hover {
+    border-color: #a0a0a0 #b9b9b9 #b9b9b9 #b9b9b9;
+    display: block;
+    cursor: pointer;
+    color: #789;
+}
+
+.select:focus {
+    border-color: #4d90fe;
+}
+
+/* Style the tab */
+.tab {
+    padding: 0px;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+.tab button.active {
+    background-color: #ccc;
+}
+
+#datamatrixAllInOne {
+    margin: auto;
+}
+
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.config {
+    display: none;
+}
+
+.config label {
+    display: block;
+    margin-bottom: 0px;
+}
+
+.character-panel {
+    display: flex;
+    align-items: center;
+}
+
+.delete-button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.5rem;
+}
+
+.delete-button:hover {
+    color: red;
+    font-weight: bold;
+    font-size: 1.75rem;
+}
+
+.delete-button:focus {
+    outline: none;
+}
+
+.config input {
+    border: none;
+    padding: 10px;
+    margin: 10px;
+    height: 3rem;
+    width: 100%;
+    border: 1px solid #eaeaea;
+    outline: none;
+}
+
+.config input:hover {
+    border-color: #a0a0a0 #b9b9b9 #b9b9b9 #b9b9b9;
+}
+
+.config input:focus {
+    border-color: #4d90fe;
+}
+
+.config input[type='radio'] {
+    padding: 1px;
+    margin: 1px;
+    height: 1rem;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.configuration-btn {
+    margin: 2rem 0 2rem 0;
+    -webkit-user-select: none;
+    /* Safari 3.1+ */
+    -moz-user-select: none;
+    /* Firefox 2+ */
+    -ms-user-select: none;
+    /* IE 10+ */
+    user-select: none;
+    display: block;
+}
+
+.configuration-btn::before {
+    content: url('./images/setting.png');
+    padding: 5px;
+}
+
+.configuration-btn:hover {
+    cursor: pointer;
+    color: rgb(22, 100, 193);
+}

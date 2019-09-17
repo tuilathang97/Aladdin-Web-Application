@@ -1,0 +1,41 @@
+{
+    "page": {
+        "page": [
+            {
+                "_title": "General Decoding Properties"
+            },
+            {
+                "page": [
+                    {
+                        "page": [
+                            {
+                                "_title": "EAN/UPC Global Settings"
+                            },
+                            {
+                                "_title": "Conditional Add-On Control 1"
+                            },
+                            {
+                                "_title": "Conditional Add-On Control 2"
+                            }
+                        ],
+                        "_title": "Code EAN/UPC"
+                    },
+                    {
+                        "page": {
+                            "_title": "GS1 DataBar Omnidirectional"
+                        },
+                        "_title": "GS1 DataBar"
+                    }
+                ],
+                "_title": "Linear Code Selection"
+            },
+            {
+                "page": {
+                    "_title": "UCC Composite"
+                },
+                "_title": "2D Code Selection"
+            }
+        ],
+        "_title": "Code Selection"
+    }
+}

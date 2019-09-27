@@ -5,16 +5,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aladdin</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/styles.css">
   <link rel="icon" type="image/png" sizes="16x16" href="./css/images/favicon.ico">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <!--script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script-->
   <!--script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script-->
   <script src="./include/polyfill.min.js"></script>
-  <script src="./include/jspdf.min.js"></script>
   <script src="./include/html2canvas.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="./css/styles.css">
+  <script src="./include/jspdf.min.js"></script>
 </head>
 
 <body>
@@ -22,7 +22,8 @@
     <div class='header-icon'>
       <button type="button" class="btn" id='print'><span class='print-icon'></span></button>
       <button type="button" class="btn" id="pdf"><span class='pdf-icon'></span></button>
-      <button type="button" class="btn" id='CCFFile'><span class='txt-icon'></span></button>
+      <button type="button" class="btn" id='import-CCFFile'><span class='import-icon'></span></button>
+      <button type="button" class="btn" id='export-CCFFile'><span class='export-icon'></span></button>
     </div>
     <div style="float: right;"><img src="./css/images/logo.png" alt="Logo-Aladdin" style='height: 64px;'></div>
   </div>
@@ -706,7 +707,7 @@
     </div>
   </div>
 
-  <div class="modal" id="ccf-modal">
+  <div class="modal" id="import-ccf-modal">
     <div class="modal__content">
       <div class="modal__header">
         <div class="modal__header--title">
@@ -715,23 +716,63 @@
       </div>
       <div class="modal__body">
         <div class="modal__body--content">
-          <textarea name="" class="modal__body--content-areatext" cols="30" rows="10"></textarea>
+          <textarea name="" class="modal__body--content-areatext" id="import-textarea" cols="30" rows="10"></textarea>
         </div>
         <div class="modal__body--file">
           <label for="ccf-filechooser" class="filechooser" >Choose a custom configuration file (.txt)... </label>
           <input type="file" name="" id="ccf-filechooser" onclick="this.value=null">
         </div>
         <div class="modal__body--button">
-          <button class="modal-button modal__body--button-generate">Generate</button>
-          <button class="modal-button modal__body--button-cancel" id="ccf-modal--cancel">Cancel</button>
+          <button class="modal-button modal__body--button-generate" id="import-button">Generate</button>
+          <button class="modal-button modal__body--button-cancel" id="import-ccf-modal--cancel">Cancel</button>
         </div>
       </div>
     </div>
   </div>
-
+  <div class="modal" id="export-ccf-modal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <div class="modal__header--title">
+          <h3>EXPORT CUSTOM CONFIGURATION</h3>
+        </div>
+      </div>
+      <div class="modal__body">
+        <div class="modal__body--content">
+          <textarea name="" class="modal__body--content-areatext" id="export-textarea" cols="30"
+            rows="10"></textarea>
+        </div>
+        <div class="modal__body--button">
+          <button class="modal-button modal__body--button-generate" id="export-button">Export</button>
+          <button class="modal-button modal__body--button-cancel" id="export-ccf-modal--cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="ASCII-modal">
+    <div class="modal__content">
+      <div class="modal__header">
+        <div class="modal__header--title">
+          <h3>ASCII Table</h3>
+        </div>
+      </div>
+      <div class="modal__body">
+        <div class="modal__body--content ascii-table">
+          <div>
+            <input type="text" data-maxlen="" data-value="" value="" id="ASCII-input-bar">
+            <button class='delete-button'>&larr;</button>
+          </div>
+        </div>
+        <div class="modal__body--button">
+          <button class="modal-button modal__body--button-generate" id="ASCII-ok">Ok</button>
+          <button class="modal-button modal__body--button-cancel" id="ASCII-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="./include/jquery-3.4.1.min.js"></script>
   <script src="./include/jquery-barcode.js"></script>
   <script src="./include/JsBarcode.all.min.js"></script>
+  <script src="./include/FileSaver.min.js"></script>
   <script src="./js/index.js" charset="utf-8"></script>
 </body>
 

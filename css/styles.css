@@ -100,8 +100,12 @@ section {
   content: url('./images/printer-32.png');
   display: inline-block;
 }
-.txt-icon::before {
-  content: url('./images/txt.png');
+.import-icon::before {
+  content: url('./images/ccf_import_32.png');
+  display: inline-block;
+}
+.export-icon::before {
+  content: url('./images/ccf_export_32.png');
   display: inline-block;
 }
 img:hover{
@@ -456,5 +460,40 @@ li.active{
 .modal-button:hover,
 .modal-button:focus {
   color: black;
+  cursor: pointer;
+}
+
+.ascii-table {
+  padding-bottom: 1rem;
+  margin: 1rem auto;
+}
+.ascii-table button{
+  height: 2rem;
+  width: 3rem;
+}
+
+.ascii-table input {
+  border: none;
+  padding: 10px;
+  margin: 10px;
+  height: 3rem;
+  width: 40%;
+  border: 1px solid #b9b9b9;
+  outline: none;
+}
+
+.ascii-table input:hover {
+  border-color: #a0a0a0 #b9b9b9 #b9b9b9 #b9b9b9;
+}
+
+.ascii-table input:focus {
+  border-color: #4d90fe;
+}
+
+.ascii-table input[type='radio'] {
+  padding: 1px;
+  margin: 1px;
+  height: 1rem;
+  width: fit-content;
   cursor: pointer;
 }

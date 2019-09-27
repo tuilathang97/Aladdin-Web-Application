@@ -49,93 +49,66 @@ var CONFIG_BUTTON = [
   }
 ];
 
-function _parsingParameters(_x) {
-  return _parsingParameters2.apply(this, arguments);
-}
+function _parsingParameters(xml) {
+  var interfaceSelectionSelectTag = $('[_id="Interface-Selection"]');
+  $(xml)
+    .find("parameter")
+    .each(function () {
+      var name = $(this).attr("name");
 
-function _parsingParameters2() {
-  _parsingParameters2 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee2(xml) {
-      var interfaceSelectionSelectTag;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
-        while (1) {
-          switch ((_context2.prev = _context2.next)) {
-            case 0:
-              interfaceSelectionSelectTag = $('[_id="Interface-Selection"');
-              $(xml)
-                .find("parameter")
-                .each(function () {
-                  var name = $(this).attr("name");
+      if (name == "Interface.Selection") {
+        var docFragment = [];
+        interfaceSelectionSelectTag.append(
+          "<option value='selectOption'>" + "Select Option" + "</option>"
+        );
+        $(this)
+          .find("value")
+          .each(function () {
+            var context = $(this).attr("context");
+            var write = $(this).attr("write");
+            write = write.replace("$", "");
+            docFragment.push(
+              "<option value='" + write + "'>" + context + "</option>"
+            );
+          });
+        interfaceSelectionSelectTag.append(docFragment);
+      }
 
-                  if (name == "Interface.Selection") {
-                    console.log(1);
-                    interfaceSelectionSelectTag.append(
-                      "<option value='selectOption'>" +
-                      "Select Option" +
-                      "</option>"
-                    );
-                    $(this)
-                      .find("value")
-                      .each(function () {
-                        var context = $(this).attr("context");
-                        var write = $(this).attr("write");
-                        write = write.replace("$", "");
-                        interfaceSelectionSelectTag.append(
-                          "<option value='" +
-                          write +
-                          "'>" +
-                          context +
-                          "</option>"
-                        );
-                      });
-                  }
+      var _name = $(this).attr("name");
 
-                  var _name = $(this).attr("name");
+      var _code = $(this).attr("code");
 
-                  var _code = $(this).attr("code");
+      var _tableRef = $(this).attr("tableRef");
 
-                  var _tableRef = $(this).attr("tableRef");
+      var _maxLen = $(this).attr("maxLen");
 
-                  var _maxLen = $(this).attr("maxLen");
+      var _id = $(this).attr("id");
 
-                  var _id = $(this).attr("id");
+      var _min = $(this).attr("min");
 
-                  var _min = $(this).attr("min");
+      var _max = $(this).attr("max");
 
-                  var _max = $(this).attr("max");
+      var _value = $(this).attr("value");
 
-                  var _value = $(this).attr("value");
+      var _tab = $(this).attr("tab");
 
-                  var _tab = $(this).attr("tab");
+      var _text = $(this)
+        .children()
+        .text();
 
-                  var _text = $(this)
-                    .children()
-                    .text();
-
-                  parameters.push({
-                    name: _name,
-                    code: _code,
-                    tableRef: _tableRef,
-                    maxLen: _maxLen,
-                    id: _id,
-                    min: _min,
-                    max: _max,
-                    value: _value,
-                    tab: _tab,
-                    text: _text
-                  });
-                });
-
-            case 2:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2);
-    })
-  );
-  return _parsingParameters2.apply(this, arguments);
+      parameters.push({
+        name: _name,
+        code: _code,
+        tableRef: _tableRef,
+        maxLen: _maxLen,
+        id: _id,
+        min: _min,
+        max: _max,
+        value: _value,
+        tab: _tab,
+        text: _text
+      });
+    });
 }
 
 function _parsingTables(xml) {
@@ -184,30 +157,32 @@ function _parsingTabs(xml) {
     });
 }
 
-function _parsingXML(_x2) {
+function _parsingXML(_x) {
   return _parsingXML2.apply(this, arguments);
 }
 
 function _parsingXML2() {
   _parsingXML2 = _asyncToGenerator(
     /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee3(xml) {
-      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    regeneratorRuntime.mark(function _callee2(xml) {
+      return regeneratorRuntime.wrap(function _callee2$(_context2) {
         while (1) {
-          switch ((_context3.prev = _context3.next)) {
+          switch ((_context2.prev = _context2.next)) {
             case 0:
-              _parsingParameters(xml);
+              _context2.next = 2;
+              return _parsingParameters(xml);
 
+            case 2:
               _parsingTables(xml);
 
               _parsingTabs(xml);
 
-            case 3:
+            case 4:
             case "end":
-              return _context3.stop();
+              return _context2.stop();
           }
         }
-      }, _callee3);
+      }, _callee2);
     })
   );
   return _parsingXML2.apply(this, arguments);
@@ -226,28 +201,32 @@ function getXML() {
             while (1) {
               switch ((_context.prev = _context.next)) {
                 case 0:
-                  _context.next = 2;
+                  console.time("parsingxml");
+                  _context.next = 3;
                   return _parsingXML(xml);
 
-                case 2:
+                case 3:
+                  console.timeEnd("parsingxml");
+                  console.time("populatingSelectDropdown");
                   populatingSelectDropdown();
+                  console.timeEnd("populatingSelectDropdown");
+                  console.time("creatingTabElements");
                   creatingTabElements("Symbolology-AIM-ID-Tab");
-                  _context.next = 6;
-                  return createTreeFolder(
-                    "Code Selection",
-                    "treeCodeSelection",
-                    xml
-                  );
-
-                case 6:
-                  _context.next = 8;
-                  return creatingTab();
-
-                case 8:
+                  console.timeEnd("creatingTabElements");
+                  console.time("createTreeFolder");
+                  createTreeFolder("Code Selection", "treeCodeSelection", xml);
+                  console.timeEnd("createTreeFolder");
+                  console.time("creatingTab");
+                  creatingTab();
+                  console.timeEnd("creatingTab");
+                  console.time("addingInputElements");
                   addingInputElements();
+                  console.timeEnd("addingInputElements");
+                  console.time("eventInit");
                   eventInit();
+                  console.timeEnd("eventInit");
 
-                case 10:
+                case 22:
                 case "end":
                   return _context.stop();
               }
@@ -256,7 +235,7 @@ function getXML() {
         })
       );
 
-      function success(_x3) {
+      function success(_x2) {
         return _success.apply(this, arguments);
       }
 
@@ -719,10 +698,11 @@ function _populatingSelectDropdown(selectID, nameNodeInXML) {
                   var elementValues = elements.map(function (element) {
                     return element.value;
                   });
+                  var docFragment = [];
 
                   for (var i = 0; i < elementNames.length; i++) {
                     var write = code + elementValues[i];
-                    select.append(
+                    docFragment.push(
                       "<option value='" +
                       write +
                       "'>" +
@@ -731,6 +711,7 @@ function _populatingSelectDropdown(selectID, nameNodeInXML) {
                     );
                   }
 
+                  select.append(docFragment);
                   break;
                 }
               }
@@ -786,8 +767,10 @@ function _populatingSelectDropdown(selectID, nameNodeInXML) {
                     return element.value;
                   });
 
+                  var _docFragment = [];
+
                   for (var _i = 0; _i < _elementNames.length; _i++) {
-                    select.append(
+                    _docFragment.push(
                       "<option value='" +
                       _elementValues[_i] +
                       "' code='" +
@@ -802,6 +785,7 @@ function _populatingSelectDropdown(selectID, nameNodeInXML) {
                     );
                   }
 
+                  select.append(_docFragment);
                   break;
                 }
               }
@@ -901,410 +885,280 @@ function addingInputElements() {
 }
 
 function creatingTab() {
-  return _creatingTab2.apply(this, arguments);
+  _creatingTab("CustomLinearCodeIDs");
+
+  _creatingTab("Custom2DCodeIDs");
+
+  _creatingTab("GeneralDecodingProperties");
+
+  _creatingTab("EANUPCGlobalSettings");
+
+  _creatingTab("CodeEANUPC");
+
+  _creatingTab("GS1DataBarOmnidirectional");
+
+  _creatingTab("GS1DataBarExpanded");
+
+  _creatingTab("GS1DataBarLimited");
+
+  _creatingTab("Code39");
+
+  _creatingTab("Code128GS1128");
+
+  _creatingTab("CodeISBT128");
+
+  _creatingTab("CodeStandard2of5");
+
+  _creatingTab("Compressed2of5");
+
+  _creatingTab("Datalogic2of5");
+
+  _creatingTab("Industrial2of5");
+
+  _creatingTab("Interleaved2of5");
+
+  _creatingTab("Matrix2of5");
+
+  _creatingTab("Codabar");
+
+  _creatingTab("Code11");
+
+  _creatingTab("Code93");
+
+  _creatingTab("MSI");
+
+  _creatingTab("Plessey");
+
+  _creatingTab("BC412");
+
+  _creatingTab("Code4");
+
+  _creatingTab("Code5");
+
+  _creatingTab("CodablockF");
+
+  _creatingTab("2DCodeSelection");
+
+  _creatingTab("UCCComposite");
+
+  _creatingTab("Aztec");
+
+  _creatingTab("ChinaSensibleCode");
+
+  _creatingTab("Code49");
+
+  _creatingTab("Code16K");
+
+  _creatingTab("Datamatrix");
+
+  _creatingTab("DotCode");
+
+  _creatingTab("Maxicode");
+
+  _creatingTab("PDF417");
+
+  _creatingTab("MicroPDF");
+
+  _creatingTab("QRCode");
+
+  _creatingTab("MicroQRCode");
+
+  _creatingTab("PostalCodes");
 }
 
-function _creatingTab2() {
-  _creatingTab2 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee4() {
-      return regeneratorRuntime.wrap(function _callee4$(_context4) {
-        while (1) {
-          switch ((_context4.prev = _context4.next)) {
-            case 0:
-              _creatingTab("CustomLinearCodeIDs");
+function _creatingTab(configID) {
+  var $this = $("#" + configID);
 
-              _creatingTab("Custom2DCodeIDs");
+  var _ID;
 
-              _creatingTab("GeneralDecodingProperties");
+  var ID;
+  var docFragment = [];
+  var IDlist = [];
+  var _iteratorNormalCompletion5 = true;
+  var _didIteratorError5 = false;
+  var _iteratorError5 = undefined;
 
-              _creatingTab("EANUPCGlobalSettings");
+  try {
+    for (
+      var _iterator5 = tabs[Symbol.iterator](), _step5;
+      !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done);
+      _iteratorNormalCompletion5 = true
+    ) {
+      var tab = _step5.value;
 
-              _creatingTab("CodeEANUPC");
+      if (tab.title == configID) {
+        _ID = tab.text;
+        ID =
+          _ID
+            .replace(/\//g, " ")
+            .replace(/ /g, "-")
+            .replace(/\(|\)/g, "") +
+          "-Tab-" +
+          configID;
+        docFragment.push(
+          '<button class="accordion" id="' + ID + '">' + _ID + "</button>"
+        );
+        docFragment.push('<div class="panel"></div>');
+        IDlist.push(ID);
+      }
+    }
+  } catch (err) {
+    _didIteratorError5 = true;
+    _iteratorError5 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion5 && _iterator5["return"] != null) {
+        _iterator5["return"]();
+      }
+    } finally {
+      if (_didIteratorError5) {
+        throw _iteratorError5;
+      }
+    }
+  }
 
-              _creatingTab("GS1DataBarOmnidirectional");
+  $this.append(docFragment);
 
-              _creatingTab("GS1DataBarExpanded");
+  for (var index in IDlist) {
+    creatingTabElements(IDlist[index]);
+  }
+}
 
-              _creatingTab("GS1DataBarLimited");
+function creatingTabElements(tabID) {
+  var $this = $("#" + tabID).next(".panel");
+  var TABLE_REFERENCE_REG_EXP = /^\w+/;
+  var docFragmentCodeTable = [];
+  var docFragmentASCIITable = [];
+  var docFragmentExeNumericRange = [];
+  var codeTableIDList = [];
+  var ASCIITableIDList = [];
+  var _iteratorNormalCompletion6 = true;
+  var _didIteratorError6 = false;
+  var _iteratorError6 = undefined;
 
-              _creatingTab("Code39");
+  try {
+    for (
+      var _iterator6 = parameters[Symbol.iterator](), _step6;
+      !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done);
+      _iteratorNormalCompletion6 = true
+    ) {
+      var parameter = _step6.value;
 
-              _creatingTab("Code128GS1128");
+      if (parameter.tab == tabID) {
+        var _ID = parameter.text;
 
-              _creatingTab("CodeISBT128");
+        var ID = _ID.replace(/\s|\//g, "-");
 
-              _creatingTab("CodeStandard2of5");
+        var tableRef = parameter.tableRef;
+        tableRef = tableRef.match(TABLE_REFERENCE_REG_EXP).toString();
+        /*use for ascii table */
 
-              _creatingTab("Compressed2of5");
+        var maxLen = parameter.maxLen;
+        var code = parameter.code;
+        /*use for ascii table */
 
-              _creatingTab("Datalogic2of5");
+        var check = $('[_id="' + ID + '"]').length > 0 ? true : false;
 
-              _creatingTab("Industrial2of5");
+        if (check) {
+          copyingExistingElement($this, ID);
+        } else {
+          switch (tableRef) {
+            case "CodeTable":
+              {
+                docFragmentCodeTable.push("<label> " + _ID + " </label>");
+                docFragmentCodeTable.push(
+                  '<select class="select" _id="' + ID + '"></select>'
+                );
+                codeTableIDList.push({
+                  id: ID,
+                  name: parameter.name
+                });
+              }
+              break;
+            // case "ASCIITable": {
+            //   docFragmentASCIITable.push(`<label>${_ID}</label>
+            //   <div class='character-panel'>
+            //   <select _id='${ID}' class='select character-select' style='width: fit-content;'></select>
+            //   <input type='text' class='input-character-select' value readonly='readonly'>
+            //   <button class='delete-button'>&larr;</button>
+            //   </div>`);
+            //   ASCIITableIDList.push({
+            //     id: ID,
+            //     name: parameter.name
+            //   })
+            // }
+            //   break;
 
-              _creatingTab("Interleaved2of5");
+            case "ASCIITable": {
+              docFragmentASCIITable.push(
+                "<label>"
+                  .concat(
+                    _ID,
+                    "</label>\n            <div class='character-panel'>\n            <button data-id='"
+                  )
+                  .concat(
+                    ID,
+                    "' class='ASCII-btn'>ASCII Character</button>\n            <input type='text' class='input-character-select' data-maxlen='"
+                  )
+                  .concat(maxLen, "' data-code='")
+                  .concat(
+                    code,
+                    "' value readonly='readonly'>\n            </div>"
+                  )
+              );
+              ASCIITableIDList.push({
+                id: ID,
+                name: parameter.name
+              });
+            }
 
-              _creatingTab("Matrix2of5");
-
-              _creatingTab("Codabar");
-
-              _creatingTab("Code11");
-
-              _creatingTab("Code93");
-
-              _creatingTab("MSI");
-
-              _creatingTab("Plessey");
-
-              _creatingTab("BC412");
-
-              _creatingTab("Code4");
-
-              _creatingTab("Code5");
-
-              _creatingTab("CodablockF");
-
-              _creatingTab("2DCodeSelection");
-
-              _creatingTab("UCCComposite");
-
-              _creatingTab("Aztec");
-
-              _creatingTab("ChinaSensibleCode");
-
-              _creatingTab("Code49");
-
-              _creatingTab("Code16K");
-
-              _creatingTab("Datamatrix");
-
-              _creatingTab("DotCode");
-
-              _creatingTab("Maxicode");
-
-              _creatingTab("PDF417");
-
-              _creatingTab("MicroPDF");
-
-              _creatingTab("QRCode");
-
-              _creatingTab("MicroQRCode");
-
-              _creatingTab("PostalCodes");
-
-            case 40:
-            case "end":
-              return _context4.stop();
+            case "exeNumericRange":
+              {
+                docFragmentExeNumericRange.push(
+                  "<label>"
+                    .concat(
+                      _ID,
+                      '</label><input type="number" class="input-parameter" id='
+                    )
+                    .concat(ID, ">")
+                );
+              }
+              break;
           }
         }
-      }, _callee4);
-    })
-  );
-  return _creatingTab2.apply(this, arguments);
-}
+      }
+    }
+  } catch (err) {
+    _didIteratorError6 = true;
+    _iteratorError6 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion6 && _iterator6["return"] != null) {
+        _iterator6["return"]();
+      }
+    } finally {
+      if (_didIteratorError6) {
+        throw _iteratorError6;
+      }
+    }
+  }
 
-function _creatingTab(_x4) {
-  return _creatingTab3.apply(this, arguments);
-}
+  if (docFragmentCodeTable.length > 0) {
+    $this.append(docFragmentCodeTable);
 
-function _creatingTab3() {
-  _creatingTab3 = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee5(configID) {
-      var $this,
-        _iteratorNormalCompletion5,
-        _didIteratorError5,
-        _iteratorError5,
-        _iterator5,
-        _step5,
-        tab,
-        _ID,
-        ID;
-
-      return regeneratorRuntime.wrap(
-        function _callee5$(_context5) {
-          while (1) {
-            switch ((_context5.prev = _context5.next)) {
-              case 0:
-                $this = $("#" + configID);
-                _iteratorNormalCompletion5 = true;
-                _didIteratorError5 = false;
-                _iteratorError5 = undefined;
-                _context5.prev = 4;
-
-                for (
-                  _iterator5 = tabs[Symbol.iterator]();
-                  !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next())
-                    .done);
-                  _iteratorNormalCompletion5 = true
-                ) {
-                  tab = _step5.value;
-
-                  if (tab.title == configID) {
-                    _ID = tab.text;
-                    ID =
-                      _ID
-                        .replace(/\//g, " ")
-                        .replace(/ /g, "-")
-                        .replace(/\(|\)/g, "") +
-                      "-Tab-" +
-                      configID;
-                    $this.append(
-                      '<button class="accordion" id="' +
-                      ID +
-                      '">' +
-                      _ID +
-                      "</button>"
-                    );
-                    $this.append('<div class="panel"></div>');
-                    creatingTabElements(ID);
-                  }
-                }
-
-                _context5.next = 12;
-                break;
-
-              case 8:
-                _context5.prev = 8;
-                _context5.t0 = _context5["catch"](4);
-                _didIteratorError5 = true;
-                _iteratorError5 = _context5.t0;
-
-              case 12:
-                _context5.prev = 12;
-                _context5.prev = 13;
-
-                if (
-                  !_iteratorNormalCompletion5 &&
-                  _iterator5["return"] != null
-                ) {
-                  _iterator5["return"]();
-                }
-
-              case 15:
-                _context5.prev = 15;
-
-                if (!_didIteratorError5) {
-                  _context5.next = 18;
-                  break;
-                }
-
-                throw _iteratorError5;
-
-              case 18:
-                return _context5.finish(15);
-
-              case 19:
-                return _context5.finish(12);
-
-              case 20:
-              case "end":
-                return _context5.stop();
-            }
-          }
-        },
-        _callee5,
-        null,
-        [[4, 8, 12, 20], [13, , 15, 19]]
+    for (var index in codeTableIDList) {
+      _populatingSelectDropdown(
+        codeTableIDList[index].id,
+        codeTableIDList[index].name
       );
-    })
-  );
-  return _creatingTab3.apply(this, arguments);
-}
-
-function creatingTabElements(_x5) {
-  return _creatingTabElements.apply(this, arguments);
-}
-
-function _creatingTabElements() {
-  _creatingTabElements = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee6(tabID) {
-      var $this,
-        TABLE_REFERENCE_REG_EXP,
-        _iteratorNormalCompletion6,
-        _didIteratorError6,
-        _iteratorError6,
-        _iterator6,
-        _step6,
-        parameter,
-        _ID,
-        ID,
-        tableRef,
-        check;
-
-      return regeneratorRuntime.wrap(
-        function _callee6$(_context6) {
-          while (1) {
-            switch ((_context6.prev = _context6.next)) {
-              case 0:
-                $this = $("#" + tabID).next(".panel");
-                TABLE_REFERENCE_REG_EXP = /^\w+/;
-                _iteratorNormalCompletion6 = true;
-                _didIteratorError6 = false;
-                _iteratorError6 = undefined;
-                _context6.prev = 5;
-                _iterator6 = parameters[Symbol.iterator]();
-
-              case 7:
-                if (
-                  (_iteratorNormalCompletion6 = (_step6 = _iterator6.next())
-                    .done)
-                ) {
-                  _context6.next = 31;
-                  break;
-                }
-
-                parameter = _step6.value;
-
-                if (!(parameter.tab == tabID)) {
-                  _context6.next = 28;
-                  break;
-                }
-
-                _ID = parameter.text;
-                ID = _ID.replace(/\s|\//g, "-");
-                tableRef = parameter.tableRef;
-                tableRef = tableRef.match(TABLE_REFERENCE_REG_EXP).toString();
-                check = $('[_id="' + ID + '"]').length > 0 ? true : false;
-
-                if (!check) {
-                  _context6.next = 19;
-                  break;
-                }
-
-                copyingExistingElement($this, ID);
-                _context6.next = 28;
-                break;
-
-              case 19:
-                _context6.t0 = tableRef;
-                _context6.next =
-                  _context6.t0 === "CodeTable"
-                    ? 22
-                    : _context6.t0 === "ASCIITable"
-                      ? 24
-                      : _context6.t0 === "exeNumericRange"
-                        ? 26
-                        : 28;
-                break;
-
-              case 22:
-                _creatingTabElementSelectDropdown(
-                  $this,
-                  ID,
-                  _ID,
-                  parameter.name
-                );
-
-                return _context6.abrupt("break", 28);
-
-              case 24:
-                _creatingTabElementASCIICodeSelection(
-                  $this,
-                  ID,
-                  _ID,
-                  parameter.name
-                );
-
-                return _context6.abrupt("break", 28);
-
-              case 26:
-                _creatingTabElementInputBar($this, ID, _ID);
-
-                return _context6.abrupt("break", 28);
-
-              case 28:
-                _iteratorNormalCompletion6 = true;
-                _context6.next = 7;
-                break;
-
-              case 31:
-                _context6.next = 37;
-                break;
-
-              case 33:
-                _context6.prev = 33;
-                _context6.t1 = _context6["catch"](5);
-                _didIteratorError6 = true;
-                _iteratorError6 = _context6.t1;
-
-              case 37:
-                _context6.prev = 37;
-                _context6.prev = 38;
-
-                if (
-                  !_iteratorNormalCompletion6 &&
-                  _iterator6["return"] != null
-                ) {
-                  _iterator6["return"]();
-                }
-
-              case 40:
-                _context6.prev = 40;
-
-                if (!_didIteratorError6) {
-                  _context6.next = 43;
-                  break;
-                }
-
-                throw _iteratorError6;
-
-              case 43:
-                return _context6.finish(40);
-
-              case 44:
-                return _context6.finish(37);
-
-              case 45:
-              case "end":
-                return _context6.stop();
-            }
-          }
-        },
-        _callee6,
-        null,
-        [[5, 33, 37, 45], [38, , 40, 44]]
-      );
-    })
-  );
-  return _creatingTabElements.apply(this, arguments);
-}
-
-function _creatingTabElementSelectDropdown(parentTab, ID, _ID, parameterName) {
-  parentTab.append("<label> " + _ID + " </label>");
-  parentTab.append('<select class="select" _id="' + ID + '"></select>');
-
-  _populatingSelectDropdown(ID, parameterName);
-}
-
-function _creatingTabElementASCIICodeSelection(
-  parentTab,
-  ID,
-  _ID,
-  parameterName
-) {
-  parentTab.append(
-    "<label>"
-      .concat(
-        _ID,
-        "</label>\n          <div class='character-panel'>\n          <select _id='"
-      )
-      .concat(
-        ID,
-        "' class='select character-select' style='width: fit-content;'></select>\n          <input type='text' class='input-character-select' value readonly='readonly'>\n          <button class='delete-button'>&larr;</button>\n          </div>"
-      )
-  );
-
-  _populatingSelectDropdown(ID, parameterName);
-}
-
-function _creatingTabElementInputBar(parentTab, ID, _ID) {
-  parentTab.append(
-    "<label>"
-      .concat(_ID, '</label><input type="number" class="input-parameter" id=')
-      .concat(ID, ">")
-  );
+    }
+  } else if (docFragmentASCIITable.length > 0) {
+    $this.append(docFragmentASCIITable); // for (let index in ASCIITableIDList) {
+    //   _populatingSelectDropdown(ASCIITableIDList[index].id, ASCIITableIDList[index].name);
+    // }
+  } else {
+    $this.append(docFragmentExeNumericRange);
+  }
 }
 
 function copyingExistingElement(parentTab, ID) {
@@ -1314,77 +1168,52 @@ function copyingExistingElement(parentTab, ID) {
   select.clone().appendTo(parentTab);
 } // var recurCount = 0;
 
-function createTreeFolder(_x6, _x7, _x8) {
-  return _createTreeFolder.apply(this, arguments);
-}
+function createTreeFolder(pageName, parentID, xml) {
+  // recurCount++;
+  // console.log('Recursive: ' + recurCount + ' time(s)');
+  $(xml)
+    .find("page")
+    .each(function () {
+      var xmlPageName = $(this).attr("title"); // console.log('finding....');
 
-function _createTreeFolder() {
-  _createTreeFolder = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee7(pageName, parentID, xml) {
-      return regeneratorRuntime.wrap(function _callee7$(_context7) {
-        while (1) {
-          switch ((_context7.prev = _context7.next)) {
-            case 0:
-              // recurCount++;
-              // console.log('Recursive: ' + recurCount + ' time(s)');
-              $(xml)
-                .find("page")
-                .each(function () {
-                  var xmlPageName = $(this).attr("title"); // console.log('finding....');
+      if (xmlPageName == pageName) {
+        // console.log('success');
+        // let findingCount = 0;
+        $(this)
+          .children("page")
+          .each(function () {
+            // findingCount++;
+            // console.log('Find: ' + findingCount + ' time(s)');
+            // console.log('childPage: ' + $(this).attr('title'));
+            // console.log('parentTree: ' + parentID);
+            var _pageName = $(this)
+              .attr("title")
+              .replace();
 
-                  if (xmlPageName == pageName) {
-                    // console.log('success');
-                    // let findingCount = 0;
-                    $(this)
-                      .children("page")
-                      .each(function () {
-                        // findingCount++;
-                        // console.log('Find: ' + findingCount + ' time(s)');
-                        // console.log('childPage: ' + $(this).attr('title'));
-                        // console.log('parentTree: ' + parentID);
-                        var _pageName = $(this)
-                          .attr("title")
-                          .replace();
+            var _treeID = "tree" + _pageName.replace(/\/|-|\s|\(|\)/g, "");
 
-                        var _treeID =
-                          "tree" + _pageName.replace(/\/|-|\s|\(|\)/g, "");
+            var currentPage = $(this);
+            var NESTED_LIST = $("#" + parentID).children(".nested"); // console.log(NESTED_LIST);
+            // console.log($('#' + parentID));
 
-                        var currentPage = $(this);
-                        var NESTED_LIST = $("#" + parentID).children(".nested"); // console.log(NESTED_LIST);
-                        // console.log($('#' + parentID));
-
-                        if (currentPage.children("page").length > 0) {
-                          // console.log('HAS_CHILD = parentID: ' + _treeID + ' pageName: ' + _pageName);
-                          NESTED_LIST.append(
-                            "<li id='"
-                              .concat(
-                                _treeID,
-                                '\'><span class="caret"></span><a>'
-                              )
-                              .concat(
-                                _pageName,
-                                "</a>\n          <ul class='nested'></ul></li>"
-                              )
-                          );
-                          createTreeFolder(_pageName, _treeID, xml);
-                        } else {
-                          // console.log('DONT HAVE CHILD = pageName: ' + _pageName);
-                          NESTED_LIST.append("<li>".concat(_pageName, "</li>"));
-                        }
-                      });
-                  }
-                });
-
-            case 1:
-            case "end":
-              return _context7.stop();
-          }
-        }
-      }, _callee7);
-    })
-  );
-  return _createTreeFolder.apply(this, arguments);
+            if (currentPage.children("page").length > 0) {
+              // console.log('HAS_CHILD = parentID: ' + _treeID + ' pageName: ' + _pageName);
+              NESTED_LIST.append(
+                "<li id='"
+                  .concat(_treeID, '\'><span class="caret"></span><a>')
+                  .concat(
+                    _pageName,
+                    "</a>\n          <ul class='nested'></ul></li>"
+                  )
+              );
+              createTreeFolder(_pageName, _treeID, xml);
+            } else {
+              // console.log('DONT HAVE CHILD = pageName: ' + _pageName);
+              NESTED_LIST.append("<li>".concat(_pageName, "</li>"));
+            }
+          });
+      }
+    });
 }
 
 $(document).ready(function () {
@@ -1503,11 +1332,99 @@ function buttonEvent() {
       .find(".input-character-select")
       .each(function () {
         $(this).attr("value", "");
-        $(this).attr("val", "");
+        $(this).attr("data-value", "");
       });
   });
   $("#allInOneButton").on("click", function () {
     codeSelection("", "", true, true);
+  });
+  $(".ASCII-btn").on("click", function () {
+    //get max len$('.ASCII-btn').on('click', function () {
+    var input = $(this).next();
+    var id = $(this).data("id");
+    var maxLen = input.data("maxlen");
+    $("#ASCII-input-bar").attr("data-maxlen", maxLen);
+    $("#ASCII-input-bar").attr("data-value", "");
+    $("#ASCII-input-bar").attr("data-id", id);
+    toggleASCIIModal();
+  });
+}
+
+function ASCIEvent() {
+  creatingASCIIModal();
+  ASCIICharacterSelectionEvent();
+  ASCIISelectedEvent();
+}
+
+function creatingASCIIModal() {
+  var asciiModal = $("#ASCII-modal");
+  var content = asciiModal.find(".modal__body--content");
+  console.log(content);
+  var tempTables = tables.filter(function (table) {
+    return table.tableName === "ASCIITable";
+  });
+  var buttonFragment = tempTables.map(function (table) {
+    return "<button class='ASCII-character' data-value='"
+      .concat(table.value, "'>")
+      .concat(table.elementName, "</button>");
+  });
+  console.log(buttonFragment);
+  content.append(buttonFragment);
+}
+
+function ASCIICharacterSelectionEvent() {
+  $(".ASCII-character").on("click", function () {
+    var inputBar = $("#ASCII-input-bar");
+    var value = inputBar.attr("data-value");
+    var maxLen = inputBar.data("maxlen");
+    var text = inputBar.attr("value");
+
+    if (value == undefined) {
+      value = "";
+    }
+
+    if (value.length / 2 < parseInt(maxLen)) {
+      value += $(this).data("value");
+      text += "[" + $(this).text() + "]";
+      inputBar.attr("data-value", value);
+      inputBar.attr("value", text);
+    } else {
+      alert(
+        "The maximun character is: " +
+        maxLen +
+        " characters. You cannot add more"
+      );
+    }
+  });
+}
+
+function ASCIISelectedEvent() {
+  $("#ASCII-ok").on("click", function () {
+    //value attr display text and data-value attr display value
+    $("button").each(function () {
+      var buttonClicked = $(this);
+      var input = $("#ASCII-input-bar");
+      var value = input.attr("data-value");
+      var text = input.attr("value");
+      var id = input.attr("data-id");
+
+      if (buttonClicked.attr("data-id") === id) {
+        console.log(buttonClicked);
+        buttonClicked.next().attr("value", text);
+        buttonClicked.next().attr("data-value", value);
+        buttonClicked.next().attr("data-id", id);
+      }
+    });
+    $("#ASCII-input-bar").attr("value", "");
+    $("#ASCII-input-bar").attr("data-maxLen", "");
+    $("#ASCII-input-bar").attr("data-value", "");
+    $("#ASCII-input-bar").attr("data-id", ""); // $('button').data('id') === $('#' + id).next().attr('value', text);
+    // $('#' + id).next().attr('data-value', value);
+
+    toggleASCIIModal();
+  });
+  $("#ASCII-cancel").on("click", function () {
+    toggleASCIIModal();
   });
 }
 
@@ -1547,11 +1464,11 @@ function characterSelection() {
     }
 
     if (inputVal.length / 2 < parseInt(maxLen)) {
-      input.attr("val", inputVal + _value);
+      input.attr("data-value", inputVal + _value);
       input.attr("value", inputValue + text);
-      input.attr("code", code);
-      input.attr("maxLen", maxLen);
-      input.attr("_id", id);
+      input.attr("data-code", code);
+      input.attr("data-maxlen", maxLen);
+      input.attr("data-id", id);
     } else {
       alert("Exceeding the permitted character limit");
     }
@@ -1566,15 +1483,29 @@ function characterSelection() {
   });
   $(".delete-button").on("click", function () {
     var $this = $(this).prev();
-    var val = $this.attr("val");
-    var value = $this.attr("value");
-    if (val == undefined) return false;
+    var value = $this.attr("data-value");
+    var text = $this.attr("value");
+    if (value == undefined) return false;
     else {
-      val = val.slice(0, val.length - 2);
-      value = value.slice(0, -1).slice(0, value.lastIndexOf("["));
+      value = value.slice(0, value.length - 2);
+      console.log(value);
+      var theLastChar = text.charAt(text.length - 1);
+      var thePrevLastChar = text.charAt(text.length - 2);
+      var thePrevofPrevLastChar = text.charAt(text.length - 3);
+
+      if (
+        thePrevLastChar === theLastChar ||
+        thePrevLastChar === thePrevofPrevLastChar
+      ) {
+        text = text.slice(0, -3);
+      } else {
+        text = text.slice(0, -1).slice(0, text.lastIndexOf("["));
+      }
+
+      console.log(text);
     }
-    $this.attr("val", val);
-    $this.attr("value", value);
+    $this.attr("data-value", value);
+    $this.attr("value", text);
   });
 }
 
@@ -1582,10 +1513,12 @@ function eventInit() {
   treeViewEvent();
   openConfig();
   buttonEvent();
+  ASCIEvent();
   accordion();
   characterSelection();
   $("#treeConfiguration").click();
   $("#caret-start").click();
+  CFFEventInit();
 }
 /*
  * END OF EVENTS
@@ -1603,7 +1536,6 @@ var text = "";
 var textDatamatrix = "";
 
 function genDatamatrixBarcode(text, id, check) {
-  console.log(text);
   text = "\\212$P," + text + ",P\\r";
   textDatamatrix = text;
 
@@ -1699,10 +1631,10 @@ function linearBarcodeGenerate() {
   $(".config")
     .find(".input-character-select")
     .each(function () {
-      var id = $(this).attr("_id");
-      var code = $(this).attr("code");
-      var maxLen = $(this).attr("maxLen");
-      var value = $(this).attr("val");
+      var id = $(this).attr("data-id");
+      var code = $(this).attr("data-code");
+      var maxLen = $(this).attr("data-maxlen");
+      var value = $(this).attr("data-value");
       var inputWriteConfig = "";
 
       if (value == undefined) {
@@ -1759,10 +1691,10 @@ function twoDemensionBarcodeGenerate() {
   $(".config")
     .find(".input-character-select")
     .each(function () {
-      var id = $(this).attr("_id");
-      var code = $(this).attr("code");
-      var maxLen = $(this).attr("maxLen");
-      var value = $(this).attr("val");
+      var id = $(this).attr("data-id");
+      var code = $(this).attr("data-code");
+      var maxLen = $(this).attr("data-maxlen");
+      var value = $(this).attr("data-value");
       var inputWriteConfig = "";
 
       if (value == undefined) {
@@ -1773,7 +1705,7 @@ function twoDemensionBarcodeGenerate() {
 
         inputWriteConfig = "C" + code + value;
         allInOneWriteConfig = allInOneWriteConfig + inputWriteConfig + ",";
-        genDatamatrixBarcode(inputWriteConfig, id, true);
+        genDatamatrixBarcode(inputWriteConfig, id, false);
       }
     });
   allInOneWriteConfig = allInOneWriteConfig.slice(0, -1);
@@ -1790,28 +1722,225 @@ function twoDemensionBarcodeGenerate() {
  * TOOLS
  */
 
-var $codeSelectionValue = $("#code-selection").val();
-$("#code-selection").on("change", function () {
-  $codeSelectionValue = $("#code-selection").val();
+var importCCFFile = document.getElementById("import-CCFFile");
+var CFFFileChooser = document.getElementById("ccf-filechooser");
+var import_modal = document.getElementById("import-ccf-modal");
+var import_modalCloseButton = document.getElementById(
+  "import-ccf-modal--cancel"
+);
+var exportCCFFile = document.getElementById("export-CCFFile");
+var export_modal = document.getElementById("export-ccf-modal");
+var export_button = document.getElementById("export-button");
+var export_modalCloseButton = document.getElementById(
+  "export-ccf-modal--cancel"
+);
+var ASCIImodal = document.getElementById("ASCII-modal");
+
+function toggleASCIIModal() {
+  ASCIImodal.classList.toggle("modal-active");
+}
+
+function toggleModal(target) {
+  switch (target) {
+    case "import":
+      {
+        import_modal.classList.toggle("modal-active");
+        $("#import-textarea").html("");
+      }
+      break;
+
+    case "export":
+      {
+        var items = exportCustomConfiguration();
+        var textBox = document.getElementById("export-textarea");
+        var _text2 = "";
+
+        for (var i = 0; i < items.length; i++) {
+          _text2 = _text2 + items[i] + "\n";
+        }
+
+        textBox.textContent = _text2;
+        export_modal.classList.toggle("modal-active");
+      }
+      break;
+  }
+}
+
+function windowOnClick(e) {
+  e.target === import_modal ? toggleModal("import") : {};
+  e.target === export_modal ? toggleModal("export") : {};
+}
+
+function exportCustomConfiguration() {
+  var configs = [];
+  var configNames = [];
+  var items = [];
+
+  if ($("#code-selection").val() == "code128") {
+  } else if ($("#code-selection").val() == "datamatrix") {
+    $("#barcode-display-datamatrix")
+      .children("h2")
+      .each(function () {
+        configNames.push($(this).text() + ":");
+      });
+    $("#barcode-display-datamatrix")
+      .find("reader")
+      .each(function () {
+        var temp = $(this).text(); //remove $P, ,P
+
+        temp = temp.substring(temp.indexOf(",") + 1, temp.lastIndexOf(","));
+        temp = "$" + temp;
+        configs.push(temp);
+      });
+  }
+
+  for (var i in configs) {
+    var temp = configs[i] + " ; " + configNames[i];
+
+    if (temp.includes("Undefined Config")) {
+      temp = temp.slice(0, temp.indexOf(";") - 1);
+    }
+
+    items.push(temp);
+  }
+
+  return items;
+}
+
+function CFFEventInit() {
+  var $codeSelectionValue = $("#code-selection").val();
+  $("#code-selection").on("change", function () {
+    $codeSelectionValue = $("#code-selection").val();
+  });
+  import_modalCloseButton.addEventListener("click", function () {
+    toggleModal("import");
+  });
+  export_modalCloseButton.addEventListener("click", function () {
+    toggleModal("export");
+  });
+  importCCFFile.addEventListener("click", function () {
+    toggleModal("import");
+  });
+  exportCCFFile.addEventListener("click", function () {
+    toggleModal("export");
+  }); // window.addEventListener("click", windowOnClick);
+
+  CFFFileChooser.addEventListener("change", function () {
+    console.log("ok");
+    var GET_CONFIG_REG_EXP = /(\$\w+)(\s?)+(;)(\s+)(.*)/g;
+
+    if (this.files && this.files[0]) {
+      console.log("success");
+      var myFile = this.files[0];
+      var reader = new FileReader();
+      var text = "";
+      reader.addEventListener("load", function (e) {
+        file = e.target.result;
+        $("#import-textarea").val("");
+        $("#import-textarea").val(file);
+        $("#import-button").on("click", function () {
+          console.log("now-click");
+          file = $("#import-textarea").val();
+          console.log(file);
+
+          if (file.match(GET_CONFIG_REG_EXP) != null) {
+            text = file
+              .match(GET_CONFIG_REG_EXP)
+              .join()
+              .replace(/,/g, "\n");
+            name = text
+              .replace(GET_CONFIG_REG_EXP, "$5")
+              .replace(/\([A-Za-z0-9\s-.)]+\)/g, "")
+              .replace(/:.+/g, "")
+              .replace(/:/g, "");
+            configName = name.match(/.+/g);
+            config = text.replace(GET_CONFIG_REG_EXP, "$1").match(/\w+/g);
+          }
+
+          if (file.match(/\$\w+\n/g) != null) {
+            configNull = file
+              .match(/\$\w+\n/g)
+              .join()
+              .match(/\w+/g);
+
+            for (var i = 0; i < configNull.length; i++) {
+              config.unshift(configNull[i]);
+              configName.unshift("Undefined Config " + i);
+            }
+          }
+
+          var allInOneConfig = config.join();
+
+          if ($codeSelectionValue == "code128") {
+            $("#barcode-display-1D")
+              .children()
+              .remove();
+            $("#barcode-display-allInOne")
+              .children()
+              .remove();
+            $("#barcode-display-datamatrix")
+              .children()
+              .remove();
+            $("#barcode-display-1D").css("display", "block");
+
+            for (var _i2 = 0; _i2 < config.length; _i2++) {
+              configName[_i2] = configName[_i2].replace(/\s|\//g, "-");
+              genCode128Barcode(config[_i2], configName[_i2]);
+            }
+          } else if ($codeSelectionValue == "datamatrix") {
+            $("#barcode-display-1D")
+              .children()
+              .remove();
+            $("#barcode-display-allInOne")
+              .children()
+              .remove();
+            $("#barcode-display-datamatrix")
+              .children()
+              .remove();
+            $("#barcode-display-2D").css("display", "flex");
+
+            for (var _i3 = 0; _i3 < config.length; _i3++) {
+              configName[_i3] = configName[_i3].replace(/\s|\//g, "-");
+              genDatamatrixBarcode(config[_i3], configName[_i3], false);
+            } // genDatamatrixBarcode(allInOneConfig, 'All-In-One', true);
+          }
+
+          toggleModal("import");
+        });
+      });
+      reader.readAsText(myFile);
+    }
+  });
+  export_button.addEventListener("click", function () {
+    var textBox = document.getElementById("export-textarea");
+    var content = textBox.textContent;
+    var blob = new Blob([content], {
+      type: "text/plain;character=utf-8"
+    });
+    saveAs(blob, "DatalogicCCF.txt");
+  });
+}
+/*
+ * END OF TOOLS
+ */
+
+/*
+ * TOOLS
+ */
+
+$("#pdf").click(function () {
+  //    html2canvas($('#barcode-display-2D'), {
+  //        onrendered: function onrendered(canvas) {
+  //            var img = canvas.toDataURL('image/png');
+  //            var pdf = new jsPDF('p', 'px', 'a4');
+  //            pdf.addImage(img, 'JPEG', 0, 0);
+  //            pdf.save('Datalogic.pdf');
+  //        }
+  //    });
+  //    $('body').scrollTop(0);
+  //    createPDF();
+  makePDF(); //    makePDFMultiPage();
 });
-
-$('#pdf').click(function () {
-
-//    html2canvas($('#barcode-display-2D'), {
-//        onrendered: function onrendered(canvas) {
-//            var img = canvas.toDataURL('image/png');
-//            var pdf = new jsPDF('p', 'px', 'a4');
-//            pdf.addImage(img, 'JPEG', 0, 0);
-//            pdf.save('Datalogic.pdf');
-//        }
-//    });
-
-//    $('body').scrollTop(0);
-//    createPDF();
-    makePDF();
-//    makePDFMultiPage();
-});
-
 $("#print").on("click", function () {
   var divContents = $(".barcode-display").html();
   var printWindow = window.open("", "", "height=400,width=800");
@@ -1824,169 +1953,78 @@ $("#print").on("click", function () {
   printWindow.document.write("</body></html>");
   printWindow.document.close();
   printWindow.print();
+}); //create pdf
 
-});
-var inputCCFFile = document.getElementById("CCFFile");
-var CFFFileChooser = document.getElementById("ccf-filechooser");
-inputCCFFile.addEventListener("click", function () {
-  toggleModal();
-});
-CFFFileChooser.addEventListener("change", function () {
-  console.log("ok");
-  var GET_CONFIG_REG_EXP = /(\$\w+)(\s?)+(;)(\s+)(.*)/g;
-
-  if (this.files && this.files[0]) {
-    var myFile = this.files[0];
-    var reader = new FileReader();
-    var text = "";
-    reader.addEventListener("load", function (e) {
-      file = e.target.result;
-      $(".modal__body--content-areatext").html(file);
-      $(".modal__body--button-generate").on("click", function () {
-        file = $(".modal__body--content-areatext").html();
-        console.log(file);
-        text = file
-          .match(GET_CONFIG_REG_EXP)
-          .join()
-          .replace(/,/g, "\n"); // text = file.match()
-
-        name = text
-          .replace(GET_CONFIG_REG_EXP, "$5")
-          .replace(/\([A-Za-z0-9\s-.)]+\)/g, "")
-          .replace(/:.+/g, "");
-        configName = name.match(/.+/g);
-        config = text.replace(GET_CONFIG_REG_EXP, "$1").match(/\w+/g);
-        configNull = file
-          .match(/\$\w+\n/g)
-          .join()
-          .match(/\w+/g);
-
-        for (var i = 0; i < configNull.length; i++) {
-          config.unshift(configNull[i]);
-          configName.unshift("Undefined Config " + i);
-        }
-
-        var allInOneConfig = config.join();
-
-        if ($codeSelectionValue == "code128") {
-          $("#barcode-display-1D")
-            .children()
-            .remove();
-          $("#barcode-display-allInOne")
-            .children()
-            .remove();
-          $("#barcode-display-datamatrix")
-            .children()
-            .remove();
-          $("#barcode-display-1D").css("display", "block");
-
-          for (var _i2 = 0; _i2 < config.length; _i2++) {
-            configName[_i2] = configName[_i2].replace(/\s|\//g, "-");
-            genCode128Barcode(config[_i2], configName[_i2]);
-          }
-        } else if ($codeSelectionValue == "datamatrix") {
-          $("#barcode-display-1D")
-            .children()
-            .remove();
-          $("#barcode-display-allInOne")
-            .children()
-            .remove();
-          $("#barcode-display-datamatrix")
-            .children()
-            .remove();
-          $("#barcode-display-2D").css("display", "flex");
-
-          for (var _i3 = 0; _i3 < config.length; _i3++) {
-            configName[_i3] = configName[_i3].replace(/\s|\//g, "-");
-            genDatamatrixBarcode(config[_i3], configName[_i3], false);
-          }
-
-          genDatamatrixBarcode(allInOneConfig, "All-In-One", true);
-        }
-
-        toggleModal();
-      });
-    });
-    reader.readAsBinaryString(myFile);
-  }
-});
-
-//create pdf
 function createPDF() {
-    var
-         form = $('#barcode-display-2D'),
-         cache_width = form.width(),
-         a4 = [595.28, 841.89]; // for a4 size paper width and height
-         form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
+  var form = $("#barcode-display-2D"),
+    cache_width = form.width(),
+    a4 = [595.28, 841.89]; // for a4 size paper width and height
 
-         html2canvas(form, {
-            imageTimeout: 2000,
-            removeContainer: true,
-            onrendered: function onrendered(canvas) {
-                var
-             img = canvas.toDataURL("image/png"),
-             doc = new jsPDF({
-                 unit: 'px',
-                 format: 'a4'
-             });
-            doc.addImage(img, 'JPEG', 20, 20);
-            doc.save('hungnguyen_test.pdf');
-            form.width(cache_width);
-            }
+  form.width(a4[0] * 1.33333 - 80).css("max-width", "none");
+  html2canvas(form, {
+    imageTimeout: 2000,
+    removeContainer: true,
+    onrendered: function onrendered(canvas) {
+      var img = canvas.toDataURL("image/png"),
+        doc = new jsPDF({
+          unit: "px",
+          format: "a4"
         });
-
+      doc.addImage(img, "JPEG", 20, 20);
+      doc.save("hungnguyen_test.pdf");
+      form.width(cache_width);
+    }
+  });
 }
 
 function makePDF() {
-    var quotes = document.getElementById('barcode-display-2D');
-    //var quotes = $('#barcode-display-2D');
-    if ($('#code-selection').val() == 'code128') {
-        //quotes = $('#barcode-display-1D');
-        quotes = document.getElementById('barcode-display-1D');
-    } else if ($('#code-selection').val() == 'datamatrix') {
-        //quotes = $('#barcode-display-2D');
-        quotes = document.getElementById('barcode-display-2D');
+  var quotes = document.getElementById("barcode-display-2D"); //var quotes = $('#barcode-display-2D');
+
+  if ($("#code-selection").val() == "code128") {
+    //quotes = $('#barcode-display-1D');
+    quotes = document.getElementById("barcode-display-1D");
+  } else if ($("#code-selection").val() == "datamatrix") {
+    //quotes = $('#barcode-display-2D');
+    quotes = document.getElementById("barcode-display-2D");
+  } //html2canvas($('#barcode-display-1D'), {
+
+  html2canvas(quotes, {
+    imageTimeout: 2000,
+    removeContainer: true,
+    onrendered: function onrendered(canvas) {
+      //document.body.appendChild(canvas);
+      var imgData = canvas.toDataURL("image/png");
+      /*
+      Here are the numbers (paper width and height) that I found to work.
+      It still creates a little overlap part between the pages, but good enough for me.
+      if you can find an official number from jsPDF, use them.
+      */
+
+      var imgWidth = 210;
+      var pageHeight = 295;
+      var imgHeight = (canvas.height * imgWidth) / canvas.width;
+      var heightLeft = imgHeight;
+      var doc = new jsPDF("p", "mm");
+      var position = 0;
+      doc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        doc.addPage();
+        doc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      doc.save("file.pdf");
     }
-
-    //html2canvas($('#barcode-display-1D'), {
-    html2canvas(quotes, {
-        imageTimeout: 2000,
-        removeContainer: true,
-        onrendered: function(canvas) {            
-            //document.body.appendChild(canvas);
-            var imgData = canvas.toDataURL('image/png');
-            /*
-            Here are the numbers (paper width and height) that I found to work.
-            It still creates a little overlap part between the pages, but good enough for me.
-            if you can find an official number from jsPDF, use them.
-            */
-            var imgWidth = 210;
-            var pageHeight = 295;
-            var imgHeight = canvas.height * imgWidth / canvas.width;
-            var heightLeft = imgHeight;
-
-            var doc = new jsPDF('p', 'mm');
-            var position = 0;
-
-            doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
-
-            while (heightLeft >= 0) {
-                position = heightLeft - imgHeight;
-                doc.addPage();
-                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-            }
-            doc.save( 'file.pdf');
-        }
-    });
+  });
 }
 
 var base64Img = null;
-imgToBase64("./css/images/logo.png", function(base64) {
-    base64Img = base64;
+imgToBase64("./css/images/logo.png", function (base64) {
+  base64Img = base64;
 });
-
 var margins = {
   top: 70,
   bottom: 40,
@@ -1994,125 +2032,103 @@ var margins = {
   width: 550
 };
 
-function makePDFMultiPage()
-{
-    var quotes = document.getElementById('barcode-display-2D');
-    //var quotes = $('#barcode-display-2D');
-    if ($('#code-selection').val() == 'code128') {
-        //quotes = $('#barcode-display-1D');
-        quotes = document.getElementById('barcode-display-1D');
-        console.log($('#barcode-display-1D').html());
-    } else if ($('#code-selection').val() == 'datamatrix') {
-        //quotes = $('#barcode-display-2D');
-        quotes = document.getElementById('barcode-display-2D');
-        console.log($('#barcode-display-2D').html());
-    }
+function makePDFMultiPage() {
+  var quotes = document.getElementById("barcode-display-2D"); //var quotes = $('#barcode-display-2D');
 
-//  var divContents = $(".barcode-display").html();
-//  var printWindow = window.open('', '', 'height=400,width=800');
-//  printWindow.document.write('<html><head><title>DIV Contents</title>');
-//  printWindow.document.write('</head><body>');
-//  printWindow.document.write("<style>\n  #barcode-display-1D{\n    text-align: center;\n  }\n  #barcode-display-2D{\n    justify-content: center;\n  }\n  </style>");
-//  printWindow.document.write(divContents);
-//  printWindow.document.write('</body></html>');
-//  printWindow.document.close();
-//  var quotes = printWindow.document.body;
-    
-    var pdf = new jsPDF('p', 'pt', 'a4');
-    pdf.setFontSize(18);
-    pdf.fromHTML(quotes,
-            margins.left, // x coord
-            margins.top,
-            {
-                    // y coord
-                    width: margins.width// max width of content on PDF
-            },function(dispose) {
-                    headerFooterFormatting(pdf, pdf.internal.getNumberOfPages());
-            },
-            margins);
+  if ($("#code-selection").val() == "code128") {
+    //quotes = $('#barcode-display-1D');
+    quotes = document.getElementById("barcode-display-1D");
+    console.log($("#barcode-display-1D").html());
+  } else if ($("#code-selection").val() == "datamatrix") {
+    //quotes = $('#barcode-display-2D');
+    quotes = document.getElementById("barcode-display-2D");
+    console.log($("#barcode-display-2D").html());
+  } //  var divContents = $(".barcode-display").html();
+  //  var printWindow = window.open('', '', 'height=400,width=800');
+  //  printWindow.document.write('<html><head><title>DIV Contents</title>');
+  //  printWindow.document.write('</head><body>');
+  //  printWindow.document.write("<style>\n  #barcode-display-1D{\n    text-align: center;\n  }\n  #barcode-display-2D{\n    justify-content: center;\n  }\n  </style>");
+  //  printWindow.document.write(divContents);
+  //  printWindow.document.write('</body></html>');
+  //  printWindow.document.close();
+  //  var quotes = printWindow.document.body;
 
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute('style','position:absolute;right:0; top:0; bottom:0; height:100%; width:650px; padding:20px;');
-    document.body.appendChild(iframe);
-
-    iframe.src = pdf.output('datauristring');
-};
-
-function headerFooterFormatting(doc, totalPages)
-{
-    for(var i = totalPages; i >= 1; i--)
+  var pdf = new jsPDF("p", "pt", "a4");
+  pdf.setFontSize(18);
+  pdf.fromHTML(
+    quotes,
+    margins.left, // x coord
+    margins.top,
     {
-        doc.setPage(i);
-        //header
-        header(doc);
+      // y coord
+      width: margins.width // max width of content on PDF
+    },
+    function (dispose) {
+      headerFooterFormatting(pdf, pdf.internal.getNumberOfPages());
+    },
+    margins
+  );
+  var iframe = document.createElement("iframe");
+  iframe.setAttribute(
+    "style",
+    "position:absolute;right:0; top:0; bottom:0; height:100%; width:650px; padding:20px;"
+  );
+  document.body.appendChild(iframe);
+  iframe.src = pdf.output("datauristring");
+}
 
-        footer(doc, i, totalPages);
-        doc.page++;
-    }
-};
+function headerFooterFormatting(doc, totalPages) {
+  for (var i = totalPages; i >= 1; i--) {
+    doc.setPage(i); //header
 
-function header(doc)
-{
-    doc.setFontSize(30);
-    doc.setTextColor(40);
-    doc.setFontStyle('normal');
+    header(doc);
+    footer(doc, i, totalPages);
+    doc.page++;
+  }
+}
 
-    if (base64Img) {
-       doc.addImage(base64Img, 'JPEG', margins.left, 10, 40,40);
-    }
+function header(doc) {
+  doc.setFontSize(30);
+  doc.setTextColor(40);
+  doc.setFontStyle("normal");
 
-    doc.text("Report Header Template", margins.left + 50, 40 );
-	doc.setLineCap(2);
-	doc.line(3, 70, margins.width + 43,70); // horizontal line
-};
+  if (base64Img) {
+    doc.addImage(base64Img, "JPEG", margins.left, 10, 40, 40);
+  }
 
-// You could either use a function similar to this or pre convert an image with for example http://dopiaza.org/tools/datauri
+  doc.text("Report Header Template", margins.left + 50, 40);
+  doc.setLineCap(2);
+  doc.line(3, 70, margins.width + 43, 70); // horizontal line
+} // You could either use a function similar to this or pre convert an image with for example http://dopiaza.org/tools/datauri
+
 // http://stackoverflow.com/questions/6150289/how-to-convert-image-into-base64-string-using-javascript
+
 function imgToBase64(url, callback, imgVariable) {
+  if (!window.FileReader) {
+    callback(null);
+    return;
+  }
 
-    if (!window.FileReader) {
-        callback(null);
-        return;
-    }
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = 'blob';
-    xhr.onload = function() {
-        var reader = new FileReader();
-        reader.onloadend = function() {
-			imgVariable = reader.result.replace('text/xml', 'image/jpeg');
-            callback(imgVariable);
-        };
-        reader.readAsDataURL(xhr.response);
+  var xhr = new XMLHttpRequest();
+  xhr.responseType = "blob";
+
+  xhr.onload = function () {
+    var reader = new FileReader();
+
+    reader.onloadend = function () {
+      imgVariable = reader.result.replace("text/xml", "image/jpeg");
+      callback(imgVariable);
     };
-    xhr.open('GET', url);
-    xhr.send();
-};
 
-function footer(doc, pageNumber, totalPages){
+    reader.readAsDataURL(xhr.response);
+  };
 
-    var str = "Page " + pageNumber + " of " + totalPages
+  xhr.open("GET", url);
+  xhr.send();
+}
 
-    doc.setFontSize(10);
-    doc.text(str, margins.left, doc.internal.pageSize.height - 20);
-
-};
-
-/*
- * END OF TOOLS
- */
-
-var modal = document.getElementById("ccf-modal");
-var modalButton = document.getElementById("ccf-modal--button");
-var modalCloseButton = document.getElementById("ccf-modal--cancel");
-
-var toggleModal = function toggleModal() {
-  modal.classList.toggle("modal-active");
-  $(".modal__body--content-areatext").html("");
-};
-
-var windowOnClick = function windowOnClick(e) {
-  e.target === modal ? toggleModal() : {};
-}; // modalButton.addEventListener("click", toggleModal);
-
-modalCloseButton.addEventListener("click", toggleModal);
-window.addEventListener("click", windowOnClick);
+function footer(doc, pageNumber, totalPages) {
+  var str = "Page " + pageNumber + " of " + totalPages;
+  doc.setFontSize(10);
+  doc.text(str, margins.left, doc.internal.pageSize.height - 20);
+}

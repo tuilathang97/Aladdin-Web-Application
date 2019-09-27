@@ -17,19 +17,20 @@ const CONFIG_BUTTON = [{
 }
 ];
 
-async function _parsingParameters(xml) {
-  const interfaceSelectionSelectTag = $('[_id="Interface-Selection"');
+function _parsingParameters(xml) {
+  const interfaceSelectionSelectTag = $('[_id="Interface-Selection"]');
   $(xml).find('parameter').each(function () {
     let name = $(this).attr('name');
     if (name == 'Interface.Selection') {
-      console.log(1)
+      let docFragment = [];
       interfaceSelectionSelectTag.append("<option value='selectOption'>" + "Select Option" + "</option>");
       $(this).find('value').each(function () {
         let context = $(this).attr('context');
         let write = $(this).attr('write');
         write = write.replace("$", "");
-        interfaceSelectionSelectTag.append("<option value='" + write + "'>" + context + "</option>");
+        docFragment.push("<option value='" + write + "'>" + context + "</option>");
       });
+      interfaceSelectionSelectTag.append(docFragment);
     }
     let _name = $(this).attr('name');
     let _code = $(this).attr('code');
@@ -91,7 +92,7 @@ function _parsingTabs( xml ) {
 }
 
 async function _parsingXML( xml ) {
-  _parsingParameters( xml );
+  await _parsingParameters( xml );
   _parsingTables(xml);
   _parsingTabs(xml);
 }
@@ -102,21 +103,27 @@ function getXML() {
     url: "./conf/commonConfig.xml",
     dataType: 'xml',
     success: async function (xml) {
-      
+      console.time('parsingxml');
       await _parsingXML(xml);
-
+      console.timeEnd('parsingxml')
+      console.time('populatingSelectDropdown');
       populatingSelectDropdown();
-      
+      console.timeEnd('populatingSelectDropdown')
+      console.time('creatingTabElements');
       creatingTabElements("Symbolology-AIM-ID-Tab");
-
-      await createTreeFolder('Code Selection', 'treeCodeSelection', xml);
-      
-      await creatingTab();
-      
+      console.timeEnd('creatingTabElements')
+      console.time('createTreeFolder');
+      createTreeFolder('Code Selection', 'treeCodeSelection', xml);
+      console.timeEnd('createTreeFolder')
+      console.time('creatingTab');
+      creatingTab();
+      console.timeEnd('creatingTab')
+      console.time('addingInputElements');
       addingInputElements();
-      
+      console.timeEnd('addingInputElements')
+      console.time('eventInit');
       eventInit();
-      
+      console.timeEnd('eventInit')
     }
   });
 }
@@ -266,10 +273,12 @@ function _populatingSelectDropdown(selectID, nameNodeInXML) {
             });
             let elementNames = elements.map(element => element.elementName);
             let elementValues = elements.map(element => element.value);
+            let docFragment = [];
             for (let i = 0; i < elementNames.length; i++) {
               let write = code + elementValues[i];
-              select.append("<option value='" + write + "'>" + elementNames[i] + "</option>");
+              docFragment.push("<option value='" + write + "'>" + elementNames[i] + "</option>");
             }
+            select.append(docFragment);
             break;
           }
         }
@@ -284,9 +293,11 @@ function _populatingSelectDropdown(selectID, nameNodeInXML) {
             });
             let elementNames = elements.map(element => element.elementName);
             let elementValues = elements.map(element => element.value);
+            let docFragment = [];
             for (let i = 0; i < elementNames.length; i++) {
-              select.append("<option value='" + elementValues[i] + "' code='" + code + "' maxLen='" + maxLen + "' >" + '[' + elementNames[i] + ']' + "</option>");
+              docFragment.push("<option value='" + elementValues[i] + "' code='" + code + "' maxLen='" + maxLen + "' >" + '[' + elementNames[i] + ']' + "</option>");
             }
+            select.append(docFragment);
             break;
           }
         }
@@ -319,7 +330,7 @@ function addingInputElements() {
   });
 }
 
-async function creatingTab() {
+function creatingTab() {
   _creatingTab('CustomLinearCodeIDs');
   _creatingTab('Custom2DCodeIDs');
   _creatingTab('GeneralDecodingProperties');
@@ -361,64 +372,106 @@ async function creatingTab() {
   _creatingTab('MicroQRCode');
   _creatingTab('PostalCodes');
 }
-
-async function _creatingTab(configID) {
+function _creatingTab(configID) {
   let $this = $('#' + configID);
+  let _ID;
+  let ID;
+  let docFragment = [];
+  let IDlist = [];
   for (let tab of tabs) {
     if (tab.title == configID) {
-      let _ID = tab.text;
-      let ID = _ID.replace(/\//g, ' ').replace(/ /g, '-').replace(/\(|\)/g,'') + '-Tab-' + configID;
-      $this.append('<button class="accordion" id="' + ID + '">' + _ID + '</button>');
-      $this.append('<div class="panel"></div>');
-      creatingTabElements(ID);
+      _ID = tab.text;
+      ID = _ID.replace(/\//g, ' ').replace(/ /g, '-').replace(/\(|\)/g,'') + '-Tab-' + configID;
+      docFragment.push('<button class="accordion" id="' + ID + '">' + _ID + '</button>');
+      docFragment.push('<div class="panel"></div>');    
+      IDlist.push(ID);
     }
+  }
+  $this.append(docFragment);
+  for( let index in IDlist){
+    creatingTabElements(IDlist[index]);
   }
 }
 
-async function creatingTabElements(tabID) {
+function creatingTabElements(tabID) {
+  
   let $this = $('#' + tabID).next('.panel');
   const TABLE_REFERENCE_REG_EXP = /^\w+/;
+  let docFragmentCodeTable = [];
+  let docFragmentASCIITable = [];
+  let docFragmentExeNumericRange = [];
+  let codeTableIDList = [];
+  let ASCIITableIDList = [];
   for (let parameter of parameters) {
     if (parameter.tab == tabID) {
       let _ID = parameter.text;
       let ID = _ID.replace(/\s|\//g, '-');
       let tableRef = parameter.tableRef;
       tableRef = tableRef.match(TABLE_REFERENCE_REG_EXP).toString();
+      /*use for ascii table */
+      let maxLen = parameter.maxLen;
+      let code = parameter.code;
+      /*use for ascii table */
       let check = $('[_id="' + ID + '"]').length > 0 ? true : false;
       if( check ){
         copyingExistingElement($this, ID);
       } else {
         switch (tableRef) {
-          case "CodeTable": _creatingTabElementSelectDropdown( $this, ID, _ID, parameter.name );
-          break;
-          case "ASCIITable": _creatingTabElementASCIICodeSelection( $this, ID, _ID, parameter.name );
-          break;
-          case 'exeNumericRange': _creatingTabElementInputBar( $this, ID, _ID );
-          break;
+          case "CodeTable": {
+            docFragmentCodeTable.push("<label> " + _ID + " </label>");
+            docFragmentCodeTable.push('<select class="select" _id="' + ID + '"></select>');
+            codeTableIDList.push({
+              id : ID,
+              name : parameter.name
+            })
+          }
+            break;
+          // case "ASCIITable": {
+          //   docFragmentASCIITable.push(`<label>${_ID}</label>
+          //   <div class='character-panel'>
+          //   <select _id='${ID}' class='select character-select' style='width: fit-content;'></select>
+          //   <input type='text' class='input-character-select' value readonly='readonly'>
+          //   <button class='delete-button'>&larr;</button>
+          //   </div>`);
+          //   ASCIITableIDList.push({
+          //     id: ID,
+          //     name: parameter.name
+          //   })
+          // }
+          //   break;
+          case "ASCIITable" : {
+            docFragmentASCIITable.push(`<label>${_ID}</label>
+            <div class='character-panel'>
+            <button data-id='${ID}' class='ASCII-btn'>ASCII Character</button>
+            <input type='text' class='input-character-select' data-maxlen='${maxLen}' data-code='${code}' value readonly='readonly'>
+            </div>`);
+            ASCIITableIDList.push({
+              id: ID,
+              name: parameter.name,
+            })
+          }
+          case 'exeNumericRange': {
+            docFragmentExeNumericRange.push(`<label>${_ID}</label><input type="number" class="input-parameter" id=${ID}>`);
+          }
+            break;
         }
       }
     }
   }
-}
-
-function _creatingTabElementSelectDropdown ( parentTab, ID, _ID, parameterName){
-  parentTab.append("<label> " + _ID + " </label>");
-  parentTab.append('<select class="select" _id="' + ID + '"></select>');
-  _populatingSelectDropdown(ID, parameterName);
-}
-
-function _creatingTabElementASCIICodeSelection( parentTab, ID, _ID, parameterName){
-  parentTab.append(`<label>${_ID}</label>
-          <div class='character-panel'>
-          <select _id='${ID}' class='select character-select' style='width: fit-content;'></select>
-          <input type='text' class='input-character-select' value readonly='readonly'>
-          <button class='delete-button'>&larr;</button>
-          </div>`);
-  _populatingSelectDropdown(ID, parameterName);
-}
-
-function _creatingTabElementInputBar ( parentTab, ID, _ID ){
-  parentTab.append(`<label>${_ID}</label><input type="number" class="input-parameter" id=${ID}>`);
+  if (docFragmentCodeTable.length > 0) {
+    $this.append(docFragmentCodeTable);
+    for(let index in codeTableIDList){
+      _populatingSelectDropdown(codeTableIDList[index].id, codeTableIDList[index].name);
+    }
+  } else if ( docFragmentASCIITable.length > 0 ){
+    $this.append(docFragmentASCIITable);
+    // for (let index in ASCIITableIDList) {
+    //   _populatingSelectDropdown(ASCIITableIDList[index].id, ASCIITableIDList[index].name);
+    // }
+  } else {
+    $this.append(docFragmentExeNumericRange);
+  }
+  
 }
 
 function copyingExistingElement ( parentTab, ID ){
@@ -431,7 +484,7 @@ function copyingExistingElement ( parentTab, ID ){
 
 // var recurCount = 0;
 
-async function createTreeFolder(pageName, parentID, xml) {
+function createTreeFolder(pageName, parentID, xml) {
   // recurCount++;
   // console.log('Recursive: ' + recurCount + ' time(s)');
   $(xml).find('page').each(function () {
@@ -553,14 +606,92 @@ function buttonEvent() {
     });
     $('.config').find('.input-character-select').each(function () {
       $(this).attr('value', '');
-      $(this).attr('val', '');
+      $(this).attr('data-value', '');
     });
   });
   $('#allInOneButton').on('click', function () {
     codeSelection('', '', true, true);
   });
+  $('.ASCII-btn').on('click', function() {
+    //get max len$('.ASCII-btn').on('click', function () {
+    let input = $(this).next();
+    let id = $(this).data('id');
+    let maxLen = input.data('maxlen');
+    $('#ASCII-input-bar').attr('data-maxlen', maxLen);
+    $('#ASCII-input-bar').attr('data-value', '');
+    $('#ASCII-input-bar').attr('data-id', id);
+    toggleASCIIModal();
+  });
+}
+function ASCIEvent() {
+  creatingASCIIModal();
+  ASCIICharacterSelectionEvent();
+  ASCIISelectedEvent();
 }
 
+function creatingASCIIModal () {
+  let asciiModal = $('#ASCII-modal');
+  let content = asciiModal.find('.modal__body--content');
+  console.log(content);
+  let tempTables = tables.filter(table => table.tableName === 'ASCIITable');
+  let buttonFragment = tempTables.map(table => {
+    return `<button class='ASCII-character' data-value='${table.value}'>${table.elementName}</button>`
+  })
+  console.log(buttonFragment);
+  content.append(buttonFragment);
+}
+
+function ASCIICharacterSelectionEvent () {
+  $('.ASCII-character').on('click', function() {
+    const inputBar = $('#ASCII-input-bar');
+    let value = inputBar.attr('data-value');
+    let maxLen = inputBar.data('maxlen');
+    let text = inputBar.attr('value'); 
+    
+    if(value == undefined){
+      value = '';
+    }
+
+    if( (value.length/2) < parseInt(maxLen)) {
+      value += $(this).data('value');
+      text += '[' + $(this).text() + ']';
+      inputBar.attr('data-value', value);
+      inputBar.attr('value', text);
+    } else {
+      alert('The maximun character is: ' + maxLen + ' characters. You cannot add more');
+    }
+
+  });
+}
+
+function ASCIISelectedEvent () { 
+  $('#ASCII-ok').on('click', function() {
+    //value attr display text and data-value attr display value 
+    $('button').each( function (){
+      let buttonClicked = $(this);
+      let input = $('#ASCII-input-bar');
+      let value = input.attr('data-value');
+      let text = input.attr('value');
+      let id = input.attr('data-id');
+      if( buttonClicked.attr('data-id') === id ){
+        console.log(buttonClicked);
+        buttonClicked.next().attr('value', text);
+        buttonClicked.next().attr('data-value', value);
+        buttonClicked.next().attr('data-id', id);
+      }
+    })
+    $('#ASCII-input-bar').attr('value', '');
+    $('#ASCII-input-bar').attr('data-maxLen', '');
+    $('#ASCII-input-bar').attr('data-value', '');
+    $('#ASCII-input-bar').attr('data-id', '');
+    // $('button').data('id') === $('#' + id).next().attr('value', text);
+    // $('#' + id).next().attr('data-value', value);
+    toggleASCIIModal();
+  });
+  $('#ASCII-cancel').on('click', function() {
+    toggleASCIIModal();
+  });
+}
 function accordion() {
   $('.accordion').on('click', function () {
     // console.log($(this));
@@ -590,11 +721,11 @@ function characterSelection() {
       inputVal = '';
     }
     if ((inputVal.length / 2) < parseInt(maxLen)) {
-      input.attr('val', inputVal + _value);
+      input.attr('data-value', inputVal + _value);
       input.attr('value', inputValue + text);
-      input.attr('code', code);
-      input.attr('maxLen', maxLen);
-      input.attr('_id', id);
+      input.attr('data-code', code);
+      input.attr('data-maxlen', maxLen);
+      input.attr('data-id', id);
     } else {
       alert('Exceeding the permitted character limit')
     }
@@ -606,15 +737,25 @@ function characterSelection() {
   });
   $('.delete-button').on('click', function () {
     let $this = $(this).prev();
-    let val = $this.attr('val');
-    let value = $this.attr('value');
-    if (val == undefined) return false;
+    let value = $this.attr('data-value');
+    let text = $this.attr('value');
+    if (value == undefined) return false;
     else {
-      val = val.slice(0, val.length - 2);
-      value = value.slice(0, -1).slice(0, value.lastIndexOf('['));
+      value = value.slice(0, value.length - 2);
+      console.log(value);
+      
+      let theLastChar = text.charAt( text.length - 1 );
+      let thePrevLastChar = text.charAt ( text.length - 2);
+      let thePrevofPrevLastChar = text.charAt ( text.length - 3);
+      if( thePrevLastChar === theLastChar || thePrevLastChar === thePrevofPrevLastChar){
+        text = text.slice(0, -3);
+      } else {
+        text = text.slice(0, -1).slice(0, text.lastIndexOf('['));
+      }
+      console.log(text);
     }
-    $this.attr('val', val);
-    $this.attr('value', value);
+    $this.attr('data-value', value);
+    $this.attr('value', text);
   });
 }
 
@@ -622,10 +763,12 @@ function eventInit() {
   treeViewEvent();
   openConfig();
   buttonEvent();
+  ASCIEvent();
   accordion();
   characterSelection();
   $('#treeConfiguration').click();
   $('#caret-start').click();
+  CFFEventInit();
 }
 
 /*
@@ -645,7 +788,6 @@ var text = "";
 var textDatamatrix = "";
 
 function genDatamatrixBarcode(text, id, check) {
-  console.log(text);
   text = "\\212$P," + text + ",P\\r";
   textDatamatrix = text;
   for (var i = 0; i < escapeSequence.length; i++) {
@@ -712,10 +854,10 @@ function linearBarcodeGenerate() {
     }
   });
   $('.config').find('.input-character-select').each(function () {
-    let id = $(this).attr('_id');
-    let code = $(this).attr('code');
-    let maxLen = $(this).attr('maxLen');
-    let value = $(this).attr('val');
+    let id = $(this).attr('data-id');
+    let code = $(this).attr('data-code');
+    let maxLen = $(this).attr('data-maxlen');
+    let value = $(this).attr('data-value');
     let inputWriteConfig = '';
     if (value == undefined) {} else if (value != '') {
       for (let i = ((value.length) / 2); i < parseInt(maxLen); i++) {
@@ -758,18 +900,19 @@ function twoDemensionBarcodeGenerate() {
     }
   });
   $('.config').find('.input-character-select').each(function () {
-    let id = $(this).attr('_id');
-    let code = $(this).attr('code');
-    let maxLen = $(this).attr('maxLen');
-    let value = $(this).attr('val');
+    let id = $(this).attr('data-id');
+    let code = $(this).attr('data-code');
+    let maxLen = $(this).attr('data-maxlen');
+    let value = $(this).attr('data-value');
     let inputWriteConfig = '';
+
     if (value == undefined) {} else if (value != '') {
       for (let i = (value.length) / 2; i < parseInt(maxLen); i++) {
         value += '00';
       }
       inputWriteConfig = 'C' + code + value;
       allInOneWriteConfig = allInOneWriteConfig + inputWriteConfig + ',';
-      genDatamatrixBarcode(inputWriteConfig, id, true);
+      genDatamatrixBarcode(inputWriteConfig, id, false);
     }
   });
   allInOneWriteConfig = allInOneWriteConfig.slice(0, -1);
@@ -785,20 +928,221 @@ function twoDemensionBarcodeGenerate() {
 /*
  * TOOLS
  */
-let $codeSelectionValue = $('#code-selection').val();
-$('#code-selection').on('change', () => {
-  $codeSelectionValue = $('#code-selection').val();
-});
+const importCCFFile = document.getElementById("import-CCFFile");
+const CFFFileChooser = document.getElementById("ccf-filechooser");
+const import_modal = document.getElementById('import-ccf-modal');
+const import_modalCloseButton = document.getElementById('import-ccf-modal--cancel');
+const exportCCFFile = document.getElementById("export-CCFFile");
+const export_modal = document.getElementById('export-ccf-modal');
+const export_button = document.getElementById("export-button");
+const export_modalCloseButton = document.getElementById('export-ccf-modal--cancel');
 
-$('#pdf').click(function () {
-  html2canvas($('#barcode-display'), {
-    onrendered: function (canvas) {
-      var img = canvas.toDataURL('image/png');
-      var pdf = new jsPDF('p', 'px', 'a4');
-      pdf.addImage(img, 'JPEG', 0, 0);
-      pdf.save('Datalogic.pdf');
+const ASCIImodal = document.getElementById('ASCII-modal')
+
+function toggleASCIIModal (){
+  ASCIImodal.classList.toggle("modal-active");
+  
+}
+function toggleModal( target ){
+  switch( target ){
+    case "import":  {
+      import_modal.classList.toggle("modal-active");
+      $('#import-textarea').html('');
+    } 
+      break;
+    case "export": {
+      let items = exportCustomConfiguration();
+      let textBox = document.getElementById('export-textarea');
+      let text = '';
+      for(let i = 0; i < items.length; i++){
+        text = text + items[i] + '\n';
+      }
+      textBox.textContent = text;
+      export_modal.classList.toggle("modal-active");
+      
+    }
+      break;
+  }
+  
+}
+
+function windowOnClick( e ) {
+  e.target === import_modal ? toggleModal("import") : {};
+  e.target === export_modal ? toggleModal("export") : {};
+}
+
+
+function exportCustomConfiguration() {
+  
+  let configs = [];
+  
+  let configNames = [];
+
+  let items = []
+
+  if ($('#code-selection').val() == 'code128') {
+
+  } else if ($('#code-selection').val() == 'datamatrix') {
+
+      $('#barcode-display-datamatrix').children("h2").each(function () {
+
+        configNames.push( $(this).text() + ':' );
+
+      });
+
+      $('#barcode-display-datamatrix').find("reader").each(function () {
+        let temp = $(this).text();
+        //remove $P, ,P 
+        temp = temp.substring( temp.indexOf(',') + 1,temp.lastIndexOf(',') ); 
+
+        temp = '$' + temp;
+
+        configs.push( temp );
+      })
+
+  }
+  
+  for(let i in configs){
+
+    let temp = configs[i] + ' ; ' + configNames[i];
+    if( temp.includes('Undefined Config')){
+      temp = temp.slice(0, temp.indexOf(';') - 1);
+    }
+    items.push(temp);
+    
+  }
+
+  return items;
+
+}
+
+
+
+function CFFEventInit () {
+
+  let $codeSelectionValue = $('#code-selection').val();
+
+  $('#code-selection').on('change', () => {
+    $codeSelectionValue = $('#code-selection').val();
+  });
+
+  import_modalCloseButton.addEventListener("click", function () {
+    toggleModal('import');
+  });
+
+  export_modalCloseButton.addEventListener("click", function () {
+    toggleModal('export');
+  });
+  
+  importCCFFile.addEventListener("click", () => {
+    toggleModal('import');
+  });
+  
+  exportCCFFile.addEventListener("click", () => {
+    toggleModal('export');
+  });
+  
+  // window.addEventListener("click", windowOnClick);
+
+  CFFFileChooser.addEventListener("change", function () {
+    console.log('ok');
+    const GET_CONFIG_REG_EXP = /(\$\w+)(\s?)+(;)(\s+)(.*)/g;
+    if (this.files && this.files[0]) {
+      console.log('success');
+      var myFile = this.files[0];
+      var reader = new FileReader();
+      var text = '';
+      reader.addEventListener('load', function (e) {
+        
+        file = e.target.result;
+        $('#import-textarea').val('');
+        $('#import-textarea').val(file);
+
+        $('#import-button').on('click', () => {
+          console.log('now-click');
+          file = $('#import-textarea').val();
+          console.log(file);
+          if ( file.match(GET_CONFIG_REG_EXP) != null ) {
+            text = file.match(GET_CONFIG_REG_EXP).join().replace(/,/g, '\n');
+            name = text.replace(GET_CONFIG_REG_EXP, '$5').replace(/\([A-Za-z0-9\s-.)]+\)/g, '').replace(/:.+/g, '').replace(/:/g,'');
+            configName = name.match(/.+/g);
+            config = text.replace(GET_CONFIG_REG_EXP, '$1').match(/\w+/g);
+          } 
+          if ( file.match(/\$\w+\n/g) != null ) {
+            configNull = file.match(/\$\w+\n/g).join().match(/\w+/g);
+            for (let i = 0; i < configNull.length; i++) {
+              config.unshift(configNull[i]);
+              configName.unshift('Undefined Config ' + i);
+            }
+          }
+
+          let allInOneConfig = config.join();
+  
+          if ($codeSelectionValue == 'code128') {
+            $('#barcode-display-1D').children().remove();
+            $('#barcode-display-allInOne').children().remove();
+            $('#barcode-display-datamatrix').children().remove();
+            $('#barcode-display-1D').css('display', 'block');
+            for (let i = 0; i < config.length; i++) {
+              configName[i] = configName[i].replace(/\s|\//g, '-');
+              genCode128Barcode(config[i], configName[i]);
+            }
+          } else if ($codeSelectionValue == 'datamatrix') {
+            $('#barcode-display-1D').children().remove();
+            $('#barcode-display-allInOne').children().remove();
+            $('#barcode-display-datamatrix').children().remove();
+            $('#barcode-display-2D').css('display', 'flex');
+            for (let i = 0; i < config.length; i++) {
+              configName[i] = configName[i].replace(/\s|\//g, '-');
+
+              genDatamatrixBarcode(config[i], configName[i], false);
+            }
+            // genDatamatrixBarcode(allInOneConfig, 'All-In-One', true);
+          }
+          toggleModal('import');
+        });
+  
+      });
+      reader.readAsText(myFile);
+        
     }
   });
+  export_button.addEventListener('click', function () {
+    let textBox = document.getElementById('export-textarea');
+    let content = textBox.textContent;
+    let blob = new Blob( [content], 
+      {
+        type: "text/plain;character=utf-8"
+      });
+      saveAs( blob, "DatalogicCCF.txt");
+  });
+}
+
+
+/*
+ * END OF TOOLS
+ */
+
+/*
+ * TOOLS
+ */
+
+
+$('#pdf').click(function () {
+
+  //    html2canvas($('#barcode-display-2D'), {
+  //        onrendered: function onrendered(canvas) {
+  //            var img = canvas.toDataURL('image/png');
+  //            var pdf = new jsPDF('p', 'px', 'a4');
+  //            pdf.addImage(img, 'JPEG', 0, 0);
+  //            pdf.save('Datalogic.pdf');
+  //        }
+  //    });
+
+  //    $('body').scrollTop(0);
+  //    createPDF();
+  makePDF();
+  //    makePDFMultiPage();
 });
 
 $("#print").on("click", function () {
@@ -806,101 +1150,193 @@ $("#print").on("click", function () {
   var printWindow = window.open('', '', 'height=400,width=800');
   printWindow.document.write('<html><head><title>DIV Contents</title>');
   printWindow.document.write('</head><body>');
-  printWindow.document.write(`<style>
-  #barcode-display-1D{
-    text-align: center;
-  }
-  #barcode-display-2D{
-    justify-content: center;
-  }
-  </style>`);
+  printWindow.document.write("<style>\n  #barcode-display-1D{\n    text-align: center;\n  }\n  #barcode-display-2D{\n    justify-content: center;\n  }\n  </style>");
   printWindow.document.write(divContents);
   printWindow.document.write('</body></html>');
   printWindow.document.close();
   printWindow.print();
-});
-
-const inputCCFFile = document.getElementById("CCFFile");
-const CFFFileChooser = document.getElementById("ccf-filechooser");
-
-inputCCFFile.addEventListener("click", () => {
-  
-  toggleModal();
 
 });
 
-CFFFileChooser.addEventListener("change", function () {
-  console.log('ok');
-  const GET_CONFIG_REG_EXP = /(\$\w+)(\s?)+(;)(\s+)(.*)/g;
-  if (this.files && this.files[0]) {
-    var myFile = this.files[0];
-    var reader = new FileReader();
-    var text = '';
-    reader.addEventListener('load', function (e) {
-      
-      file = e.target.result;
 
-      $('.modal__body--content-areatext').html(file); 
-      $('.modal__body--button-generate').on('click', () => {
-        file = $('.modal__body--content-areatext').html();
-        console.log(file);
-        text = file.match(GET_CONFIG_REG_EXP).join().replace(/,/g, '\n');
-        // text = file.match()
-        name = text.replace(GET_CONFIG_REG_EXP, '$5').replace(/\([A-Za-z0-9\s-.)]+\)/g, '').replace(/:.+/g, '');
-        configName = name.match(/.+/g);
-        config = text.replace(GET_CONFIG_REG_EXP, '$1').match(/\w+/g);
-        configNull = file.match(/\$\w+\n/g).join().match(/\w+/g);
-        for (let i = 0; i < configNull.length; i++) {
-          config.unshift(configNull[i]);
-          configName.unshift('Undefined Config ' + i);
-        }
-        let allInOneConfig = config.join();
+//create pdf
+function createPDF() {
+  var
+    form = $('#barcode-display-2D'),
+    cache_width = form.width(),
+    a4 = [595.28, 841.89]; // for a4 size paper width and height
+  form.width((a4[0] * 1.33333) - 80).css('max-width', 'none');
 
+  html2canvas(form, {
+    imageTimeout: 2000,
+    removeContainer: true,
+    onrendered: function onrendered(canvas) {
+      var
+        img = canvas.toDataURL("image/png"),
+        doc = new jsPDF({
+          unit: 'px',
+          format: 'a4'
+        });
+      doc.addImage(img, 'JPEG', 20, 20);
+      doc.save('hungnguyen_test.pdf');
+      form.width(cache_width);
+    }
+  });
 
-        if ($codeSelectionValue == 'code128') {
-          $('#barcode-display-1D').children().remove();
-          $('#barcode-display-allInOne').children().remove();
-          $('#barcode-display-datamatrix').children().remove();
-          $('#barcode-display-1D').css('display', 'block');
-          for (let i = 0; i < config.length; i++) {
-            configName[i] = configName[i].replace(/\s|\//g, '-');
-            genCode128Barcode(config[i], configName[i]);
-          }
-        } else if ($codeSelectionValue == 'datamatrix') {
-          $('#barcode-display-1D').children().remove();
-          $('#barcode-display-allInOne').children().remove();
-          $('#barcode-display-datamatrix').children().remove();
-          $('#barcode-display-2D').css('display', 'flex');
-          for (let i = 0; i < config.length; i++) {
-            configName[i] = configName[i].replace(/\s|\//g, '-');
-            genDatamatrixBarcode(config[i], configName[i], false);
-          }
-          genDatamatrixBarcode(allInOneConfig, 'All-In-One', true);
-        }
-        toggleModal();
-      });
-
-    });
-    reader.readAsBinaryString(myFile);
-      
-  }
-});
-/*
- * END OF TOOLS
- */
-
-const modal = document.getElementById('ccf-modal');
-const modalButton = document.getElementById('ccf-modal--button');
-const modalCloseButton = document.getElementById('ccf-modal--cancel');
-
-const toggleModal = () => {
-  modal.classList.toggle("modal-active");
-  $('.modal__body--content-areatext').html(''); 
-} 
-const windowOnClick = (e) => {
-  e.target === modal ? toggleModal() : {};
 }
 
-// modalButton.addEventListener("click", toggleModal);
-modalCloseButton.addEventListener("click", toggleModal);
-window.addEventListener("click", windowOnClick);
+function makePDF() {
+  var quotes = document.getElementById('barcode-display-2D');
+  //var quotes = $('#barcode-display-2D');  
+  if ($('#code-selection').val() == 'code128') {
+    //quotes = $('#barcode-display-1D');
+    quotes = document.getElementById('barcode-display-1D');
+  } else if ($('#code-selection').val() == 'datamatrix') {
+    //quotes = $('#barcode-display-2D');
+    quotes = document.getElementById('barcode-display-2D');
+  }
+
+  //html2canvas($('#barcode-display-1D'), { 
+  html2canvas(quotes, {
+    imageTimeout: 2000,
+    removeContainer: true,  
+    onrendered: function (canvas) {
+      //document.body.appendChild(canvas);
+      var imgData = canvas.toDataURL('image/png');
+      /*
+      Here are the numbers (paper width and height) that I found to work.
+      It still creates a little overlap part between the pages, but good enough for me.
+      if you can find an official number from jsPDF, use them.
+      */
+      var imgWidth = 210;
+      var pageHeight = 295;
+      var imgHeight = canvas.height * imgWidth / canvas.width;
+      var heightLeft = imgHeight;
+
+      var doc = new jsPDF('p', 'mm');
+      var position = 0;
+
+      doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        doc.addPage();
+        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      doc.save('file.pdf');
+    }
+  });
+}
+
+var base64Img = null;
+imgToBase64("./css/images/logo.png", function (base64) {
+  base64Img = base64;
+});
+
+var margins = {
+  top: 70,
+  bottom: 40,
+  left: 30,
+  width: 550
+};
+
+function makePDFMultiPage() {
+  var quotes = document.getElementById('barcode-display-2D');
+  //var quotes = $('#barcode-display-2D');
+  if ($('#code-selection').val() == 'code128') {
+    //quotes = $('#barcode-display-1D');
+    quotes = document.getElementById('barcode-display-1D');
+    console.log($('#barcode-display-1D').html());
+  } else if ($('#code-selection').val() == 'datamatrix') {
+    //quotes = $('#barcode-display-2D');
+    quotes = document.getElementById('barcode-display-2D');
+    console.log($('#barcode-display-2D').html());
+  }
+
+  //  var divContents = $(".barcode-display").html();
+  //  var printWindow = window.open('', '', 'height=400,width=800');
+  //  printWindow.document.write('<html><head><title>DIV Contents</title>');
+  //  printWindow.document.write('</head><body>');
+  //  printWindow.document.write("<style>\n  #barcode-display-1D{\n    text-align: center;\n  }\n  #barcode-display-2D{\n    justify-content: center;\n  }\n  </style>");
+  //  printWindow.document.write(divContents);
+  //  printWindow.document.write('</body></html>');
+  //  printWindow.document.close();
+  //  var quotes = printWindow.document.body;
+
+  var pdf = new jsPDF('p', 'pt', 'a4');
+  pdf.setFontSize(18);
+  pdf.fromHTML(quotes,
+    margins.left, // x coord
+    margins.top,
+    {
+      // y coord
+      width: margins.width// max width of content on PDF
+    }, function (dispose) {
+      headerFooterFormatting(pdf, pdf.internal.getNumberOfPages());
+    },
+    margins);
+
+  var iframe = document.createElement('iframe');
+  iframe.setAttribute('style', 'position:absolute;right:0; top:0; bottom:0; height:100%; width:650px; padding:20px;');
+  document.body.appendChild(iframe);
+
+  iframe.src = pdf.output('datauristring');
+};
+
+function headerFooterFormatting(doc, totalPages) {
+  for (var i = totalPages; i >= 1; i--) {
+    doc.setPage(i);
+    //header
+    header(doc);
+
+    footer(doc, i, totalPages);
+    doc.page++;
+  }
+};
+
+function header(doc) {
+  doc.setFontSize(30);
+  doc.setTextColor(40);
+  doc.setFontStyle('normal');
+
+  if (base64Img) {
+    doc.addImage(base64Img, 'JPEG', margins.left, 10, 40, 40);
+  }
+
+  doc.text("Report Header Template", margins.left + 50, 40);
+  doc.setLineCap(2);
+  doc.line(3, 70, margins.width + 43, 70); // horizontal line
+};
+
+// You could either use a function similar to this or pre convert an image with for example http://dopiaza.org/tools/datauri
+// http://stackoverflow.com/questions/6150289/how-to-convert-image-into-base64-string-using-javascript
+function imgToBase64(url, callback, imgVariable) {
+
+  if (!window.FileReader) {
+    callback(null);
+    return;
+  }
+  var xhr = new XMLHttpRequest();
+  xhr.responseType = 'blob';
+  xhr.onload = function () {
+    var reader = new FileReader();
+    reader.onloadend = function () {
+      imgVariable = reader.result.replace('text/xml', 'image/jpeg');
+      callback(imgVariable);
+    };
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', url);
+  xhr.send();
+};
+
+function footer(doc, pageNumber, totalPages) {
+
+  var str = "Page " + pageNumber + " of " + totalPages
+
+  doc.setFontSize(10);
+  doc.text(str, margins.left, doc.internal.pageSize.height - 20);
+
+};

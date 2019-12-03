@@ -1412,6 +1412,18 @@
       <element name="USB-HID-POS">44</element>
       <element name="USB-KBD">35</element>
     </table>
+    <table name="CodeTable-89" note="Special code table using for OCR because of duplication">
+      <element name="Disable">00000000</element>
+      <element name="EU Identity Card OCR">00000001</element>
+      <element name="Passport OCR">00000002</element>
+      <element name="Italian Postal OCR">00000004</element>
+      <element name="Italian ITB Bank OCR">00000008</element>
+      <element name="Swiss Driving License OCR">00000010</element>
+      <element name="First Custom Structure">10000000</element>
+      <element name="Second Custom Structure">20000000</element>
+      <element name="Third Custom Structure">40000000</element>
+      <element name="Fourth Custom Structure">80000000</element>
+    </table>
   </tableList>
   <parameters>
     <parameter name="Interface.Selection" value="05" type="command" protection="USER" code="$hA" readBack="true" mark="|">
@@ -1675,25 +1687,25 @@
     <parameter name="General.Battery.CI_BATTERY_PROFILES" value="00" type="enum" protection="USER" code="BCHP" tableRef="CodeTable-5" sizeLen="2">
       <context>Battery Profiles</context>
     </parameter>
-    <parameter name="Label Formatting.CI_CASE_CONVERSION" value="00" type="enum" protection="USER" code="LFCA" tableRef="CodeTable-56" sizeLen="2">
+    <parameter name="Label Formatting.CI_CASE_CONVERSION" value="00" type="enum" protection="USER" code="LFCA" tableRef="CodeTable-56" sizeLen="2" tab="Data-Format-Global-Parameters-Tab-DataFormat">
       <context>Case Conversion</context>
     </parameter>
-    <parameter name="Suffix.CI_GLOBAL_PREFIX" value="0000000000000000000000000000000000000000" type="stringFilled" protection="USER" code="LFPR" tableRef="ASCIITable" sizeLen="40" minLen="0" maxLen="20" fillChar="00">
+    <parameter name="Suffix.CI_GLOBAL_PREFIX" value="0000000000000000000000000000000000000000" type="stringFilled" protection="USER" code="LFPR" tableRef="ASCIITable" sizeLen="40" minLen="0" maxLen="20" fillChar="00" tab="Data-Format-Global-Parameters-Tab-DataFormat">
       <context>Global Prefix</context>
     </parameter>
-    <parameter name="Suffix.CI_GLOBAL_SUFFIX" value="0000000000000000000000000000000000000000" type="stringFilled" protection="USER" code="LFSU" tableRef="ASCIITable" sizeLen="40" minLen="0" maxLen="20" fillChar="00">
+    <parameter name="Suffix.CI_GLOBAL_SUFFIX" value="0000000000000000000000000000000000000000" type="stringFilled" protection="USER" code="LFSU" tableRef="ASCIITable" sizeLen="40" minLen="0" maxLen="20" fillChar="00" tab="Data-Format-Global-Parameters-Tab-DataFormat">
       <context>Global Suffix</context>
     </parameter>
-    <parameter name="Label Formatting.CI_CHARACTER_CONVERSION" value="0000000000000000" type="stringFilled" protection="USER" code="LFCH" tableRef="ASCIITable" sizeLen="16" minLen="0" maxLen="8" fillChar="FF">
+    <parameter name="Label Formatting.CI_CHARACTER_CONVERSION" value="0000000000000000" type="stringFilled" protection="USER" code="LFCH" tableRef="ASCIITable" sizeLen="16" minLen="0" maxLen="8" fillChar="FF" tab="Character-Replacement-Tab-DataFormat">
       <context>Character Conversion</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_ALL_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="AIEN" tableRef="CodeTable-0" sizeLen="2">
+    <parameter name="Label Formatting.AIM ID.CI_ALL_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="AIEN" tableRef="CodeTable-0" sizeLen="2" tab="Global-Label-ID-Parameters-Tab-CodeIdentifiers">
       <context>Global AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.EAN Two Label.CI_GLOBAL_MID_LABEL_ID" value="0000000000000000000000000000000000000000" type="stringFilled" protection="USER" code="N2MI" tableRef="ASCIITable" sizeLen="40" minLen="0" maxLen="20" fillChar="00">
+    <parameter name="Label Formatting.EAN Two Label.CI_GLOBAL_MID_LABEL_ID" value="0000000000000000000000000000000000000000" type="stringFilled" protection="USER" code="N2MI" tableRef="ASCIITable" sizeLen="40" minLen="0" maxLen="20" fillChar="00" tab="Global-Label-ID-Parameters-Tab-CodeIdentifiers">
       <context>Set Global Mid Label ID Characters</context>
     </parameter>
-    <parameter name="Label Formatting.CI_LABEL_ID_CONTROL" value="00" type="enum" protection="USER" code="IDCO" tableRef="CodeTable-42" sizeLen="2">
+    <parameter name="Label Formatting.CI_LABEL_ID_CONTROL" value="00" type="enum" protection="USER" code="IDCO" tableRef="CodeTable-42" sizeLen="2" tab="Global-Label-ID-Parameters-Tab-CodeIdentifiers">
       <context>Label ID Control</context>
     </parameter>
     <parameter name="Interface.Star.CI_STAR_TX_MODE" value="00" type="enum" protection="USER" code="STTX" tableRef="CodeTable-83" sizeLen="2">
@@ -1739,232 +1751,232 @@
       <context>Compatible Mode System Speed</context>
     </parameter>
     <!-- START USING TAB-->
-    <parameter name="Label Formatting.AIM ID.CI_EAN128_AIM_ID_ENABLE" value="01" type="enum" protection="USER" code="U8AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_EAN128_AIM_ID_ENABLE" value="01" type="enum" protection="USER" code="U8AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GS1-128 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_EAN8_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="8BAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_EAN8_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="8BAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>EAN-8 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_EAN13_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="3BAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_EAN13_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="3BAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>EAN-13 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_UPCE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="EBAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_UPCE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="EBAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>UPC-E AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_UPCA_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="ABAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_UPCA_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="ABAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>UPC-A AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_UPCA_P2_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="A2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_UPCA_P2_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="A2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>UPC-A P2 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_UPCA_P5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="A5AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_UPCA_P5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="A5AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>UPC-A P5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_UPCE_P2_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="E2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_UPCE_P2_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="E2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>UPC-E P2 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_UPCE_P5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="E5AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_UPCE_P5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="E5AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>UPC-E P5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_EAN8_P2_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="82AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_EAN8_P2_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="82AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>EAN-8 P2 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_EAN8_P5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="85AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_EAN8_P5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="85AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>EAN-8 P5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_EAN13_P2_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="32AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_EAN13_P2_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="32AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>EAN-13 P2 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_EAN13_P5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="35AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_EAN13_P5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="35AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>EAN-13 P5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_GTIN_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="GBAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_GTIN_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="GBAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GTIN AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_GTIN2_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="G2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_GTIN2_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="G2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GTIN P2 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_GTIN5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="G5AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_GTIN5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="G5AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GTIN P5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_CODE39_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C3AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_CODE39_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C3AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Code39 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_CODE128_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C8AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_CODE128_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C8AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Code 128 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_ISBT128_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="I8AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_ISBT128_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="I8AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Concatenated ISBT 128 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_I2OF5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="I2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_I2OF5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="I2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Interleaved 2 of 5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_I2OF5_CIP_HR_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="HRAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_I2OF5_CIP_HR_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="HRAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Interleaved 2 of 5 CIP HR AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_S25_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="S2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_S25_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="S2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Code Standard 2 of 5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_CODABAR_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="CBAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_CODABAR_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="CBAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Codabar AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_CODE39_PHARMACODE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="P3AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_CODE39_PHARMACODE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="P3AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Code 39 Pharmacode AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_RSS_14_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="4BAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_RSS_14_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="4BAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GS1 DataBar Omnidirectional AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_RSS_LIMITED_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="LBAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_RSS_LIMITED_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="LBAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GS1 DataBar Limited AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_RSS_EXPANDED_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="XBAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_RSS_EXPANDED_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="XBAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GS1 DataBar Expanded AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_CODE11_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C1AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_CODE11_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C1AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Code11 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_ISBN_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="ISAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_ISBN_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="ISAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>ISBN AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_ISSN_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="INAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_ISSN_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="INAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>ISSN AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_FOLLETT_2OF5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="F2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_FOLLETT_2OF5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="F2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Follett 2 of 5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_ABC_CODABAR_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="ACAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_ABC_CODABAR_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="ACAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>ABC Codabar AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_CODE39_CIP_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="CCAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_CODE39_CIP_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="CCAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Code 39 CIP AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_MATRIX_2OF5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="M2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_MATRIX_2OF5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="M2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Matrix 2 of 5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_IATA_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="IAAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_IATA_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="IAAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>IATA Industrial 2 of 5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_MSI_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="MSAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_MSI_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="MSAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>MSI AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_PLESSEY_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PLAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_PLESSEY_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PLAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Plessey AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_ANKER_PLESSEY_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="APAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_ANKER_PLESSEY_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="APAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Anker Plessey AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_INDUSTRIAL_2OF5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="U2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_INDUSTRIAL_2OF5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="U2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Industrial 2 of 5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_CODE93_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C9AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_CODE93_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C9AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Code 93 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_TRIOPTIC_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="CTAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_TRIOPTIC_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="CTAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Trioptic Code AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_BC412_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="BCAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_BC412_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="BCAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>BC412 AIM ID</context>
     </parameter>
-    <parameter name="Code Identifiers.CI_CODE16K_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C6AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Code Identifiers.CI_CODE16K_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C6AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Code 16K AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_CODE4_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="CRAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_CODE4_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="CRAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Code 4 AIM ID</context>
     </parameter>
-    <parameter name="Code Identifiers.CI_CODE49_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C4AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Code Identifiers.CI_CODE49_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C4AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Code 49 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_CODE5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C5AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_CODE5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C5AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Code 5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_CODABLOCK_F_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="CFAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_CODABLOCK_F_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="CFAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Codablock F AIM ID</context>
     </parameter>
-    <parameter name="Code Identifiers.CI_COMPRESSED_2OF5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Code Identifiers.CI_COMPRESSED_2OF5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Compressed 2 of 5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_DATALOGIC_2OF5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="D2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_DATALOGIC_2OF5_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="D2AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Datalogic 2 of 5 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_NW7_CODABAR_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C7AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_NW7_CODABAR_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="C7AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>NW7 Code AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_AZTEC_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="AZAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_AZTEC_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="AZAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Aztec AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_CHINA_SENSIBLE_CODE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="CSAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_CHINA_SENSIBLE_CODE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="CSAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>China Sensible Code AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_DATAMATRIX_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="DMAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_DATAMATRIX_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="DMAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Datamatrix AIM ID</context>
     </parameter>
-    <parameter name="Code Identifiers.GS1.CI_GS1_DATAMATRIX_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="GDAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Code Identifiers.GS1.CI_GS1_DATAMATRIX_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="GDAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GS1 Datamatrix AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_PDF417_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="P4AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_PDF417_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="P4AI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>PDF 417 AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_MICRO_PDF_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="MIAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_MICRO_PDF_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="MIAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Micro PDF AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_QRCODE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="QRAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_QRCODE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="QRAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>QR Code AIM ID</context>
     </parameter>
-    <parameter name="Code Identifiers.CI_GS1_QR_CODE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="GQAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Code Identifiers.CI_GS1_QR_CODE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="GQAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GS1 QR Code AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_MAXICODE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="MXAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_MAXICODE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="MXAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Maxicode AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_EAN128_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="UCAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_EAN128_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="UCAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GS1-128 Composite AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_EAN13_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="3CAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_EAN13_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="3CAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>EAN-13 Composite AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_EAN8_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="8CAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_EAN8_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="8CAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>EAN-8 Composite AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_UPCA_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="AUAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_UPCA_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="AUAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>UPC-A Composite AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_UPCE_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="ECAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_UPCE_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="ECAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>UPC-E Composite AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_RSS_14_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="4CAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_RSS_14_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="4CAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GS1 DataBar Omnidirectional Composite AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_RSS_LIMITED_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="LCAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_RSS_LIMITED_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="LCAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GS1 DataBar Limited Composite AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_RSS_EXPANDED_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="XCAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_RSS_EXPANDED_COMPOSITE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="XCAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>GS1 DataBar Expanded Composite AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_POSTAL_AUSTRALIAN_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PAAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_POSTAL_AUSTRALIAN_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PAAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Australian Postal Code AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_POSTAL_IMB_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PMAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_POSTAL_IMB_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PMAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>IMB Postal Code AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_POSTAL_JAPANESE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PJAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_POSTAL_JAPANESE_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PJAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Japan Postal Code AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_POSTAL_KIX_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PKAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_POSTAL_KIX_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PKAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>KIX Postal Code AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_POSTAL_PLANET_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PPAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_POSTAL_PLANET_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PPAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Postal Planet Code AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_POSTAL_PORTUGAL_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PGAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_POSTAL_PORTUGAL_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PGAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Portugal Postal Code AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_POSTAL_POSTNET_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PBAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_POSTAL_POSTNET_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PBAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Postnet Postal AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_POSTAL_ROYAL_MAIL_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PRAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_POSTAL_ROYAL_MAIL_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PRAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Royal Postal Code AIM ID</context>
     </parameter>
-    <parameter name="Label Formatting.AIM ID.CI_POSTAL_SWEDISH_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PSAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab">
+    <parameter name="Label Formatting.AIM ID.CI_POSTAL_SWEDISH_AIM_ID_ENABLE" value="00" type="enum" protection="USER" code="PSAI" tableRef="CodeTable-0" sizeLen="2" tab="Symbolology-AIM-ID-Tab-CodeIdentifiers">
       <context>Swedish Postal Code AIM ID</context>
     </parameter>
 
@@ -2975,11 +2987,20 @@
     <parameter name="Decoding.Micro QR.CI_MICROQR_LENGTH_CONTROL" value="00" type="enum" protection="USER" code="MQLC" tableRef="CodeTable-4" sizeLen="2" tab="Micro-QR-Code-Tab-MicroQRCode">
       <context>Micro QR Length Control</context>
     </parameter>
-    <parameter name="Decoding.Micro QR.CI_MICROQR_LENGTH_1" value="0001" type="hexInt" protection="USER" code="MQL1" id="Micro-QR-Code-Set-Length-1" tableRef="exeNumericRange-33" sizeLen="4" min="1" max="0023" tab="Micro-QR-Code-Tab-MicroQRCode">
+    <parameter name="Decoding.Micro QR.CI_MICROQR_LENGTH_1" value="0001" type="hexInt" protection="USER" code="MQL1" id="Micro-QR-Set-Length-1" tableRef="exeNumericRange-33" sizeLen="4" min="1" max="0023" tab="Micro-QR-Code-Tab-MicroQRCode">
       <context>Micro QR Set Length 1</context>
     </parameter>
-    <parameter name="Decoding.Micro QR.CI_MICROQR_LENGTH_2" value="0023" type="hexInt" protection="USER" code="MQL2" id="Micro-QR-Code-Set-Length-1" tableRef="exeNumericRange-34" sizeLen="4" min="0" max="0023" tab="Micro-QR-Code-Tab-MicroQRCode">
+    <parameter name="Decoding.Micro QR.CI_MICROQR_LENGTH_2" value="0023" type="hexInt" protection="USER" code="MQL2" id="Micro-QR-Set-Length-2" tableRef="exeNumericRange-34" sizeLen="4" min="0" max="0023" tab="Micro-QR-Code-Tab-MicroQRCode">
       <context>Micro QR Set Length 2</context>
+    </parameter>
+    <parameter name="Decoding.OCR.CI_OCR_CONFIDENCE" value="37" type="hexInt" protection="USER" code="OCCF" id="Set-OCR-Confidence-Threshold" tableRef="exeNumericRange-24" sizeLen="2" min="0" max="64" tab="OCR-Code-Tab-OCRCode">
+      <context>Set OCR Confidence Threshold</context>
+    </parameter>
+    <parameter name="Decoding.OCR.CI_OCR_ENABLE" value="00000000" type="enum" protection="USER" code="OCEN" tableRef="CodeTable-89" sizeLen="8" tab="OCR-Code-Tab-OCRCode">
+      <context>Enable/Disable OCR Document Types</context>
+    </parameter>
+    <parameter name="Decoding.OCR.CI_OCR_MULTIFRAME" value="01" type="hexInt" protection="USER" code="OCMU" id="Set-OCR-Multiframe-Parameter" tableRef="exeNumericRange-36" sizeLen="2" min="01" max="05" tab="OCR-Code-Tab-OCRCode">
+      <context>Set OCR Multiframe Parameter</context>
     </parameter>
     <parameter name="Decoding.Postal Codes.CI_POSTAL_CODE_SELECTION" value="00" type="enum" protection="USER" code="POEN" tableRef="CodeTable-63" sizeLen="2" tab="Postal-Codes-Tab-PostalCodes">
       <context>Postal Code Enable/Disable and selection</context>
@@ -3038,11 +3059,20 @@
         <page name="Generic_Device _MicroPDF.pnl" title="Micro PDF" tocId="html_pdf_417_2d_htm"></page>
         <page name="Generic_Device _QRCode.pnl" title="QR Code" tocId="html_qr_code_2d_htm"></page>
         <page name="Generic_Device _MicroQRCode.pnl" title="Micro QR Code" tocId="html_micro_qr_code_2d_htm"></page>
+        <page name="Generic_Device _OCRCode.pnl" title="OCR Code" tocId="html_ocr_code_htm"></page>
         <page name="Generic_Device _PostalCodes.pnl" title="Postal Codes" tocId="html_postal_codes_2d_htm"></page>
       </page>
     </page>
   </rootpage>
   <tabs>
+    <tab title="DataFormat">
+      <label text="Data Format Global Parameters"/> 
+      <label text="Character Replacement"/>
+    </tab>
+    <tab title="CodeIdentifiers"> 
+      <label text="Global Label ID Parameters"/> 
+      <label text="Symbolology AIM ID"/>
+    </tab>
     <tab title="CustomLinearCodeIDs">
       <label text="Code EAN/UPC"/>
       <label text="Code EAN/UPC with Add-On"/>
@@ -3261,6 +3291,9 @@
     </tab>
     <tab title="MicroQRCode">
       <label name="" text="Micro QR Code" />
+    </tab>
+    <tab title="OCRCode">
+      <label name="" text="OCR Code"/>
     </tab>
     <tab title="PostalCodes">
       <label name="" text="Postal Codes" />

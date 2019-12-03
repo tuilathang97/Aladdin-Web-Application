@@ -3,13 +3,13 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Aladdin</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
   <link rel="stylesheet" href="./css/styles.css">
   <link rel="icon" type="image/png" sizes="16x16" href="./css/images/favicon.ico">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
   <!--script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script-->
   <!--script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script-->
   <script src="./include/polyfill.min.js"></script>
@@ -18,762 +18,722 @@
 </head>
 
 <body>
-  <div class="header">
-    <div class='header-icon'>
-      <button type="button" class="btn" id='print'><span class='print-icon'></span></button>
-      <button type="button" class="btn" id="pdf"><span class='pdf-icon'></span></button>
-      <button type="button" class="btn" id='import-CCFFile'><span class='import-icon'></span></button>
-      <button type="button" class="btn" id='export-CCFFile'><span class='export-icon'></span></button>
-    </div>
-    <div style="float: right;"><img src="./css/images/logo.png" alt="Logo-Aladdin" style='height: 64px;'></div>
-  </div>
-  <div class='container-fluid'>
-    <div class="row">
-      <div class='col-sm-4'>
-        <div class='tree-view scrollbar force-overflow'>
-          <ul id="myUL">
-            <li id='treeConfiguration'><span class="caret" id='caret-start'></span><a>Configuration</a>
-              <ul class="nested">
-                <li>Power Save</li>
-                <li class="treelinks"><span class="caret"></span><a>Interface Selection</a>
-                  <ul class="nested">
-                    <li>Global Interface Features</li>
-                    <li>USB-COM Parameters</li>
-                    <li>USB Keyboard Parameters</li>
-                    <li>IBM-OEM Parameters</li>
-                    <li>Keyboard Wedge Parameters</li>
-                    <li>IBM 46XX Parameters</li>
-                    <li>RS232 Parameters</li>
-                  </ul>
-                </li>
-                <li class="treelinks"><span class="caret"></span><a>Radio Parameters</a>
-                  <ul class="nested">
-                    <li>Radio Beeper</li>
-                    <li>Compatibility Mode</li>
-                  </ul>
-                </li>
-                <li class="treelinks"><span class="caret"></span><a>Reading Parameters</a>
-                  <ul class="nested">
-                    <li></a>Audio</li>
-                    <li>Button</li>
-                    <li>Beeper</li>
-                    <li>Motion</li>
-                    <li>LED</li>
-                    <li>Camera Control</li>
-                    <li>Vibration</li>
-                    <li>Decoding</li>
-                  </ul>
-                </li>
-                <li><span class="caret"></span><a>Data Format</a>
-                  <ul class="nested">
-                    <li class="treelinks"><span class="caret"></span><a>Code Identifiers</a>
-                      <ul class='nested'>
-                        <li>Custom Linear Code IDs</li>
-                        <li>Custom 2D Code IDs</li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li id='treeCodeSelection'><span class='caret'></span><a>Code Selection</a>
-                  <ul class="nested">
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-        <div class="row config-row">
-          <div class='col-xl'>
-            <div class="tab">
-              <button class="tablinks active" id="tabConfiguration">Configuration</button>
+    <main class="main">
+        <header class="main--header">
+            <div class='header-icon'>
+                <button type="button" class="label-btn" id='print'><span class='print-icon'></span></button>
+                <button type="button" class="label-btn" id="pdf"><span class='pdf-icon'></span></button>
+                <button type="button" class="label-btn" id='import-CCFFile'><span class='import-icon'></span></button>
+                <button type="button" class="label-btn" id='export-CCFFile'><span class='export-icon'></span></button>
             </div>
-            <div id="Configuration-Tab" class="tabcontent scrollbar force-overflow">
-              <div id="Configuration" class="config" style="text-align: left; font-weight: 600;">
-                <label class='configuration-btn configuration-btn-default' id='Restore-Deafault-Configuration'>Restore
-                  Custom Default Config</label>
-                <label class='configuration-btn configuration-btn-USA' id='Restore-USA-Factory-Configuration'>Restore
-                  USA Factory Configuration</label>
-                <label class='configuration-btn configuration-btn-EU' id='Restore-EU-Factory-Configuration'>Restore EU
-                  Factory Configuration</label>
-              </div>
+            <img class="datalogic-logo" src="./css/images/logo.png" alt="Logo-Aladdin" style='height: 64px;'>
+        </header>
+        <section class="main--content">
+            <article class=content__config>
+                <div class="config__tree-view scrollbar">
+                    <!-- <div class='tree-view scrollbar'> -->
+                        <ul id="myUL">
+                            <li id='treeConfiguration'><span class="caret" id='caret-start'></span><a>Configuration</a>
+                                <ul class="nested">
+                                    <li>Power Save</li>
+                                    <li class="treelinks"><span class="caret"></span><a>Interface Selection</a>
+                                        <ul class="nested">
+                                            <li>Global Interface Features</li>
+                                            <li>USB-COM Parameters</li>
+                                            <li>USB Keyboard Parameters</li>
+                                            <li>IBM-OEM Parameters</li>
+                                            <li>Keyboard Wedge Parameters</li>
+                                            <li>IBM 46XX Parameters</li>
+                                            <li>RS232 Parameters</li>
+                                        </ul>
+                                    </li>
+                                    <li class="treelinks"><span class="caret"></span><a>Radio Parameters</a>
+                                        <ul class="nested">
+                                            <li>Radio Beeper</li>
+                                            <li>Compatibility Mode</li>
+                                        </ul>
+                                    </li>
+                                    <li class="treelinks"><span class="caret"></span><a>Reading Parameters</a>
+                                        <ul class="nested">
+                                            <li></a>Audio</li>
+                                            <li>Button</li>
+                                            <li>Beeper</li>
+                                            <li>Motion</li>
+                                            <li>LED</li>
+                                            <li>Camera Control</li>
+                                            <li>Vibration</li>
+                                            <li>Decoding</li>
+                                        </ul>
+                                    </li>
+                                    <li><span class="caret"></span><a>Data Format</a>
+                                        <ul class="nested">
+                                            <li class="treelinks"><span class="caret"></span><a>Code Identifiers</a>
+                                                <ul class='nested'>
+                                                    <li>Custom Linear Code IDs</li>
+                                                    <li>Custom 2D Code IDs</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li id='treeCodeSelection'><span class='caret'></span><a>Code Selection</a>
+                                        <ul class="nested">
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    <!-- </div> -->
+                </div>
+                <div class="config__config-tab tab separator config__separator">
+                    <button class="tablinks active" id="tabConfiguration">Configuration</button>
+                </div>
+                <div class="config__config-row scrollbar">
+                    
+                    <div id="Configuration-Tab" class="tabcontent ">
+                        <div class="">
+                            <div id="Configuration" class="config" style="text-align: left; font-weight: 600;">
+                                <label class='configuration-btn configuration-btn-default'
+                                    id='Restore-Deafault-Configuration'>Restore
+                                    Custom Default Config</label>
+                                <label class='configuration-btn configuration-btn-USA'
+                                    id='Restore-USA-Factory-Configuration'>Restore
+                                    USA Factory Configuration</label>
+                                <label class='configuration-btn configuration-btn-EU'
+                                    id='Restore-EU-Factory-Configuration'>Restore EU
+                                    Factory Configuration</label>
+                            </div>
 
-              <!--power save-->
-              <div id="PowerSave" class="config">
-                <button class="accordion">Power Save</button>
-                <div class="panel">
-                  <label for="">Sleep Mode Timeout</label>
-                  <input type="number" class="input-parameter" id="Sleep-Mode-Timeout">
-                  <label for="">Power Down Timeout</label>
-                  <input type="number" class="input-parameter" id="Power-Down-Timeout">
-                </div>
-                <button class="accordion">Battery Profile</button>
-                <div class="panel">
-                  <label for="">Battery Profiles</label>
-                  <select _id="Battery-Profiles" class='select'></select>
-                </div>
-              </div>
-              <!--power save-->
+                            <!--power save-->
+                            <div id="PowerSave" class="config">
+                                <button class="accordion">Power Save</button>
+                                <div class="panel">
+                                    <label for="">Sleep Mode Timeout</label>
+                                    <input type="number" class="input-parameter" id="Sleep-Mode-Timeout">
+                                    <label for="">Power Down Timeout</label>
+                                    <input type="number" class="input-parameter" id="Power-Down-Timeout">
+                                </div>
+                                <button class="accordion">Battery Profile</button>
+                                <div class="panel">
+                                    <label for="">Battery Profiles</label>
+                                    <select _id="Battery-Profiles" class='select'></select>
+                                </div>
+                            </div>
+                            <!--power save-->
 
-              <!--interface selection-->
-              <div id="InterfaceSelection" class="config">
-                <button class="accordion">Interface Selection</button>
-                <div class="panel">
-                  <label for="">Interface</label>
-                  <select _id="Interface-Selection" class='select'></select>
-                </div>
-              </div>
-              <!--interface selection-->
+                            <!--interface selection-->
+                            <div id="InterfaceSelection" class="config">
+                                <button class="accordion">Interface Selection</button>
+                                <div class="panel">
+                                    <label for="">Interface</label>
+                                    <select _id="Interface-Selection" class='select'></select>
+                                </div>
+                            </div>
+                            <!--interface selection-->
 
-              <!--Global Interface Features-->
-              <div id="GlobalInterfaceFeatures" class="config">
-                <button class="accordion">Global Interface Features</button>
-                <div class="panel">
-                  <label for="">Host Commands - Obey/Ignore</label>
-                  <select _id="Host-Commands" class='select'></select>
-                </div>
-              </div>
-              <!--Global Interface Features-->
+                            <!--Global Interface Features-->
+                            <div id="GlobalInterfaceFeatures" class="config">
+                                <button class="accordion">Global Interface Features</button>
+                                <div class="panel">
+                                    <label for="">Host Commands - Obey/Ignore</label>
+                                    <select _id="Host-Commands" class='select'></select>
+                                </div>
+                            </div>
+                            <!--Global Interface Features-->
 
-              <!--USB COM Parameter-->
-              <div id="USBCOMParameters" class="config">
-                <button class="accordion">USB-COM Parameters</button>
-                <div class="panel">
-                  <label for="">Handshaking Control</label>
-                  <select _id="Handshaking-Control-USB-COM" class='select'></select>
-                  <label for="">Beep On ASCII BEL</label>
-                  <select _id="Beep-On-ASCII-BEL-USB-COM" class='select'></select>
-                  <label for="">Beep On Not on File</label>
-                  <select _id="Beep-On-Not-on-File-USB-COM" class='select'></select>
-                </div>
-                <button class="accordion">ACK/NAK Options</button>
-                <div class="panel">
-                  <label for="">ACK NAK Options</label>
-                  <select _id="ACK-NAK-Options-USB-COM" class='select'></select>
-                  <label for="">ACK NAK Timeout Value</label>
-                  <input type="number" class="input-parameter" id="ACK-NAK-Timeout-Value-USB-COM">
-                  <label for="">ACK NAK Retry Count</label>
-                  <input type="number" class="input-parameter" id="ACK-NAK-Retry-Count-USB-COM">
-                  <label for="">ACK NAK Error Handling</label>
-                  <select _id="ACK-NAK-Error-Handling-USB-COM" class='select'></select>
-                </div>
-                <button class="accordion">Timing and Communication</button>
-                <div class="panel">
-                  <label for="">Transmission Timeout</label>
-                  <input type="number" class="input-parameter" id="Transmission-Timeout-USB-COM">
-                </div>
-              </div>
-              <!--USB COM Parameter-->
+                            <!--USB COM Parameter-->
+                            <div id="USBCOMParameters" class="config">
+                                <button class="accordion">USB-COM Parameters</button>
+                                <div class="panel">
+                                    <label for="">Handshaking Control</label>
+                                    <select _id="Handshaking-Control-USB-COM" class='select'></select>
+                                    <label for="">Beep On ASCII BEL</label>
+                                    <select _id="Beep-On-ASCII-BEL-USB-COM" class='select'></select>
+                                    <label for="">Beep On Not on File</label>
+                                    <select _id="Beep-On-Not-on-File-USB-COM" class='select'></select>
+                                </div>
+                                <button class="accordion">ACK/NAK Options</button>
+                                <div class="panel">
+                                    <label for="">ACK NAK Options</label>
+                                    <select _id="ACK-NAK-Options-USB-COM" class='select'></select>
+                                    <label for="">ACK NAK Timeout Value</label>
+                                    <input type="number" class="input-parameter" id="ACK-NAK-Timeout-Value-USB-COM">
+                                    <label for="">ACK NAK Retry Count</label>
+                                    <input type="number" class="input-parameter" id="ACK-NAK-Retry-Count-USB-COM">
+                                    <label for="">ACK NAK Error Handling</label>
+                                    <select _id="ACK-NAK-Error-Handling-USB-COM" class='select'></select>
+                                </div>
+                                <button class="accordion">Timing and Communication</button>
+                                <div class="panel">
+                                    <label for="">Transmission Timeout</label>
+                                    <input type="number" class="input-parameter" id="Transmission-Timeout-USB-COM">
+                                </div>
+                            </div>
+                            <!--USB COM Parameter-->
 
-              <!--USB Keyboard Parameters -->
-              <div id="USBKeyboardParameters" class="config">
-                <button class="accordion">Country Code / Encoding Type</button>
-                <div class="panel">
-                  <label for="">Keyboard Country Mode</label>
-                  <select _id="Keyboard-Country-Mode" class='select'></select>
-                  <label for="">Encoding Type</label>
-                  <select _id="Encoding-Type" class='select'></select>
-                  <label for="">Keyboard ALT Output Type</label>
-                  <input type="number" class="input-parameter" id="Keyboard-ALT-Output-Type">
-                </div>
-                <button class="accordion">Keyboard Control</button>
-                <div class="panel">
-                  <label for="">Keyboard Caps Lock State</label>
-                  <select _id="Keyboard-Caps-Lock-State" class='select'></select>
-                  <label for="">Keyboard Numlock State</label>
-                  <select _id="Keyboard-Numlock-State" class='select'></select>
-                  <label for="">Keyboard Numeric Keypad</label>
-                  <select _id="Keyboard-Numeric-Keypad" class='select'></select>
-                  <label for="">Keyboard Send Control Characters</label>
-                  <select _id="Keyboard-Send-Control-Characters" class='select'></select>
-                </div>
-                <button class="accordion">Timing and Communication</button>
-                <div class="panel">
-                  <label for="">Transmission Timeout</label>
-                  <input type="number" class="input-parameter" id="Transmission-Timeout">
-                  <label for="">USB Keyboard Speed</label>
-                  <input type=" number" class="input-parameter" id="USB-Keyboard-Speed">
-                  <label for="">Keyboard Intercode Delay</label>
-                  <input type="number" class="input-parameter" id="Keyboard-Intercode-Delay">
-                </div>
-                <button class="accordion">USB Suspend</button>
-                <div class="panel">
-                  <label for="">USB Suspend Enable</label>
-                  <select _id="USBKB-Suspend-Enable" class='select'></select>
-                </div>
-              </div>
-              <!--USB Keyboard Parameters -->
+                            <!--USB Keyboard Parameters -->
+                            <div id="USBKeyboardParameters" class="config">
+                                <button class="accordion">Country Code / Encoding Type</button>
+                                <div class="panel">
+                                    <label for="">Keyboard Country Mode</label>
+                                    <select _id="Keyboard-Country-Mode" class='select'></select>
+                                    <label for="">Encoding Type</label>
+                                    <select _id="Encoding-Type" class='select'></select>
+                                    <label for="">Keyboard ALT Output Type</label>
+                                    <input type="number" class="input-parameter" id="Keyboard-ALT-Output-Type">
+                                </div>
+                                <button class="accordion">Keyboard Control</button>
+                                <div class="panel">
+                                    <label for="">Keyboard Caps Lock State</label>
+                                    <select _id="Keyboard-Caps-Lock-State" class='select'></select>
+                                    <label for="">Keyboard Numlock State</label>
+                                    <select _id="Keyboard-Numlock-State" class='select'></select>
+                                    <label for="">Keyboard Numeric Keypad</label>
+                                    <select _id="Keyboard-Numeric-Keypad" class='select'></select>
+                                    <label for="">Keyboard Send Control Characters</label>
+                                    <select _id="Keyboard-Send-Control-Characters" class='select'></select>
+                                </div>
+                                <button class="accordion">Timing and Communication</button>
+                                <div class="panel">
+                                    <label for="">Transmission Timeout</label>
+                                    <input type="number" class="input-parameter" id="Transmission-Timeout">
+                                    <label for="">USB Keyboard Speed</label>
+                                    <input type=" number" class="input-parameter" id="USB-Keyboard-Speed">
+                                    <label for="">Keyboard Intercode Delay</label>
+                                    <input type="number" class="input-parameter" id="Keyboard-Intercode-Delay">
+                                </div>
+                                <button class="accordion">USB Suspend</button>
+                                <div class="panel">
+                                    <label for="">USB Suspend Enable</label>
+                                    <select _id="USBKB-Suspend-Enable" class='select'></select>
+                                </div>
+                            </div>
+                            <!--USB Keyboard Parameters -->
 
-              <!-- IBM OEM Parameters -->
-              <div id="IBMOEMParameters" class="config">
-                <button class="accordion">USB-OEM Parameters</button>
-                <div class="panel">
-                  <label for="">USB-OEM Device Usage</label>
-                  <select _id="USB-OEM-Device-Usage" class='select'></select>
-                </div>
-                <button class="accordion">USB Suspend</button>
-                <div class="panel">
-                  <label for="">USB Suspend Enable</label>
-                  <select _id="USB-Suspend-Enable" class='select'></select>
-                </div>
-              </div>
-              <!-- USB OEM Parameters -->
+                            <!-- IBM OEM Parameters -->
+                            <div id="IBMOEMParameters" class="config">
+                                <button class="accordion">USB-OEM Parameters</button>
+                                <div class="panel">
+                                    <label for="">USB-OEM Device Usage</label>
+                                    <select _id="USB-OEM-Device-Usage" class='select'></select>
+                                </div>
+                                <button class="accordion">USB Suspend</button>
+                                <div class="panel">
+                                    <label for="">USB Suspend Enable</label>
+                                    <select _id="USB-Suspend-Enable" class='select'></select>
+                                </div>
+                            </div>
+                            <!-- USB OEM Parameters -->
 
-              <!-- Keyboard Wedge Parameters -->
-              <div id="KeyboardWedgeParameters" class="config">
-                <button class="accordion">Country Code / Encoding Type</button>
-                <div class="panel">
-                  <label for="">Keyboard Country Mode</label>
-                  <select _id="Keyboard-Country-Mode-Wedge" class='select'></select>
-                  <label for="">Encoding Type</label>
-                  <select _id="Encoding-Type-Wedge" class='select'></select>
-                  <label for="">Keyboard ALT Output Type</label>
-                  <input type="number" class="input-parameter" id="Keyboard-ALT-Output-Type-Wedge">
-                </div>
-                <button class="accordion">Keyboard Control</button>
-                <div class="panel">
-                  <label for="">Keyboard Caps Lock State</label>
-                  <select _id="Keyboard-Caps-Lock-State-Wedge" class='select'></select>
-                  <label for="">Keyboard Numlock State</label>
-                  <select _id="Keyboard-Numlock-State-Wedge" class='select'></select>
-                  <label for="">Keyboard Numeric Keypad</label>
-                  <select _id="Keyboard-Numeric-Keypad-Wedge" class='select'></select>
-                  <label for="">Keyboard Send Control Characters</label>
-                  <select _id="Keyboard-Send-Control-Characters-Wedge" class='select'></select>
-                </div>
-                <button class="accordion">Timing and Communication</button>
-                <div class="panel">
-                  <label for="">Transmission Timeout</label>
-                  <input type="number" class="input-parameter" id="Transmission-Timeout-Wedge">
-                  <label for="">USB Keyboard Speed</label>
-                  <input type="number" class="input-parameter" id="USB-Keyboard-Speed-Wedge">
-                  <label for="">Keyboard Intercode Delay</label>
-                  <input type="number" class="input-parameter" id="Keyboard-Intercode-Delay-Wedge">
-                </div>
-              </div>
-              <!-- Keyboard Wedge Parameters -->
+                            <!-- Keyboard Wedge Parameters -->
+                            <div id="KeyboardWedgeParameters" class="config">
+                                <button class="accordion">Country Code / Encoding Type</button>
+                                <div class="panel">
+                                    <label for="">Keyboard Country Mode</label>
+                                    <select _id="Keyboard-Country-Mode-Wedge" class='select'></select>
+                                    <label for="">Encoding Type</label>
+                                    <select _id="Encoding-Type-Wedge" class='select'></select>
+                                    <label for="">Keyboard ALT Output Type</label>
+                                    <input type="number" class="input-parameter" id="Keyboard-ALT-Output-Type-Wedge">
+                                </div>
+                                <button class="accordion">Keyboard Control</button>
+                                <div class="panel">
+                                    <label for="">Keyboard Caps Lock State</label>
+                                    <select _id="Keyboard-Caps-Lock-State-Wedge" class='select'></select>
+                                    <label for="">Keyboard Numlock State</label>
+                                    <select _id="Keyboard-Numlock-State-Wedge" class='select'></select>
+                                    <label for="">Keyboard Numeric Keypad</label>
+                                    <select _id="Keyboard-Numeric-Keypad-Wedge" class='select'></select>
+                                    <label for="">Keyboard Send Control Characters</label>
+                                    <select _id="Keyboard-Send-Control-Characters-Wedge" class='select'></select>
+                                </div>
+                                <button class="accordion">Timing and Communication</button>
+                                <div class="panel">
+                                    <label for="">Transmission Timeout</label>
+                                    <input type="number" class="input-parameter" id="Transmission-Timeout-Wedge">
+                                    <label for="">USB Keyboard Speed</label>
+                                    <input type="number" class="input-parameter" id="USB-Keyboard-Speed-Wedge">
+                                    <label for="">Keyboard Intercode Delay</label>
+                                    <input type="number" class="input-parameter" id="Keyboard-Intercode-Delay-Wedge">
+                                </div>
+                            </div>
+                            <!-- Keyboard Wedge Parameters -->
 
-              <!-- IBM46XX Parameters -->
-              <div id="IBM46XXParameters" class="config">
-                <button class="accordion">IBM 46XX Parameters</button>
-                <div class="panel">
-                  <label for="">Interface Options 1</label>
-                  <select _id="IBM-46XX-Parameters" class='select'></select>
-                </div>
-              </div>
-              <!-- IBM46XX Parameters -->
+                            <!-- IBM46XX Parameters -->
+                            <div id="IBM46XXParameters" class="config">
+                                <button class="accordion">IBM 46XX Parameters</button>
+                                <div class="panel">
+                                    <label for="">Interface Options 1</label>
+                                    <select _id="IBM-46XX-Parameters" class='select'></select>
+                                </div>
+                            </div>
+                            <!-- IBM46XX Parameters -->
 
-              <!-- RS232 Parameter -->
-              <div id="RS232Parameters" class="config">
-                <button class="accordion">RS-232 Speed</button>
-                <div class="panel">
-                  <label for="">Baud Rate</label>
-                  <select _id="Baud-Rate" class='select'></select>
-                  <label for="">Parity</label>
-                  <select _id="Parity" class='select'></select>
-                  <label for="">Data bits</label>
-                  <select _id="Data-bits" class='select'></select>
-                  <label for="">Stop bits</label>
-                  <select _id="Stop-bits" class='select'></select>
-                </div>
-                <button class="accordion">RS-232 Parameters</button>
-                <div class="panel">
-                  <label for="">Handshaking Control</label>
-                  <select _id="Handshaking-Control-RS232" class='select'></select>
-                  <label for="">Beep On ASCII BEL</label>
-                  <select _id="Beep-On-ASCII-BEL-RS232" class='select'></select>
-                  <label for="">Beep On Not on File</label>
-                  <select _id="Beep-On-Not-on-File-RS232" class='select'></select>
-                </div>
-                <button class="accordion">ACK/NAK Options</button>
-                <div class="panel">
-                  <label for="">ACK NAK Options</label>
-                  <select _id="ACK-NAK-Options-RS232" class='select'></select>
-                  <label for="">ACK NAK Timeout Value</label>
-                  <input type="number" class="input-parameter" id="ACK-NAK-Timeout-Value-RS232">
-                  <label for="">ACK NAK Retry Count</label>
-                  <input type="number" class="input-parameter" id="ACK-NAK-Retry-Count-RS232">
-                  <label for="">ACK NAK Error Handling</label>
-                  <select _id="ACK-NAK-Error-Handling-RS232" class='select'></select>
-                </div>
-                <button class="accordion">Timing and Communication</button>
-                <div class="panel">
-                  <label for="">Intercharacter Delay</label>
-                  <input type="number" class="input-parameter" id="Intercharacter-Delay-RS232">
-                </div>
-              </div>
-              <!-- RS232 Parameter -->
+                            <!-- RS232 Parameter -->
+                            <div id="RS232Parameters" class="config">
+                                <button class="accordion">RS-232 Speed</button>
+                                <div class="panel">
+                                    <label for="">Baud Rate</label>
+                                    <select _id="Baud-Rate" class='select'></select>
+                                    <label for="">Parity</label>
+                                    <select _id="Parity" class='select'></select>
+                                    <label for="">Data bits</label>
+                                    <select _id="Data-bits" class='select'></select>
+                                    <label for="">Stop bits</label>
+                                    <select _id="Stop-bits" class='select'></select>
+                                </div>
+                                <button class="accordion">RS-232 Parameters</button>
+                                <div class="panel">
+                                    <label for="">Handshaking Control</label>
+                                    <select _id="Handshaking-Control-RS232" class='select'></select>
+                                    <label for="">Beep On ASCII BEL</label>
+                                    <select _id="Beep-On-ASCII-BEL-RS232" class='select'></select>
+                                    <label for="">Beep On Not on File</label>
+                                    <select _id="Beep-On-Not-on-File-RS232" class='select'></select>
+                                </div>
+                                <button class="accordion">ACK/NAK Options</button>
+                                <div class="panel">
+                                    <label for="">ACK NAK Options</label>
+                                    <select _id="ACK-NAK-Options-RS232" class='select'></select>
+                                    <label for="">ACK NAK Timeout Value</label>
+                                    <input type="number" class="input-parameter" id="ACK-NAK-Timeout-Value-RS232">
+                                    <label for="">ACK NAK Retry Count</label>
+                                    <input type="number" class="input-parameter" id="ACK-NAK-Retry-Count-RS232">
+                                    <label for="">ACK NAK Error Handling</label>
+                                    <select _id="ACK-NAK-Error-Handling-RS232" class='select'></select>
+                                </div>
+                                <button class="accordion">Timing and Communication</button>
+                                <div class="panel">
+                                    <label for="">Intercharacter Delay</label>
+                                    <input type="number" class="input-parameter" id="Intercharacter-Delay-RS232">
+                                </div>
+                            </div>
+                            <!-- RS232 Parameter -->
 
-              <!--Reading Parameter-->
-              <div id="ReadingParameters" class="config">
-                <button class="accordion">Reading Parameters</button>
-                <div class="panel">
-                  <label for="">Stand Mode Illuminator Off Time</label>
-                  <input type="number" class="input-parameter" id="Stand-Mode-Illuminator-Off-Time">
-                  <label for="">Scan Mode</label>
-                  <select _id="Scan-Mode" class='select'></select>
-                  <label for="">Scanning Active Time</label>
-                  <input type="number" class="input-parameter" id="Scanning-Active-Time">
-                  <label for="">Flash On Time</label>
-                  <input type="number" class="input-parameter" id="Flash-On-Time">
-                  <label for="">Flash Off Time</label>
-                  <input type="number" class="input-parameter" id="Flash-Off-Time">
-                  <label for="">Object Gone Time</label>
-                  <input type="number" class="input-parameter" id="Object-Gone-Time">
-                  <label for="">Stand Mode Sensitivity</label>
-                  <select _id="Stand-Mode-Sensitivity" class='select'></select>
-                  <label for="">Stand Base Detection</label>
-                  <select _id="Stand-Base-Detection" class='select'></select>
-                  <label for="">Stand Mode Flash</label>
-                  <select _id="Stand-Mode-Flash" class='select'></select>
-                </div>
-                <button class="accordion">Mobile Phone Mode</button>
-                <div class="panel">
-                  <label for="">Mobile Phone Saturation Rate</label>
-                  <input type="number" class="input-parameter" id="Mobile-Phone-Saturation-Rate">
-                  <label for="">Mobile Phone Mode</label>
-                  <select _id="Mobile-Phone-Mode" class='select'></select>
-                </div>
-                <button class="accordion">Pick Mode</button>
-                <div class="panel">
-                  <label for="">Pick Mode Aiming Duration Timer</label>
-                  <select _id="Pick-Mode-Aiming-Duration-Timer" class='select'></select>
-                  <label for="">Pick Mode Enable</label>
-                  <select _id="Pick-Mode-Enable" class='select'></select>
-                </div>
-              </div>
-              <!--Reading Parameters-->
+                            <!--Reading Parameter-->
+                            <div id="ReadingParameters" class="config">
+                                <button class="accordion">Reading Parameters</button>
+                                <div class="panel">
+                                    <label for="">Stand Mode Illuminator Off Time</label>
+                                    <input type="number" class="input-parameter" id="Stand-Mode-Illuminator-Off-Time">
+                                    <label for="">Scan Mode</label>
+                                    <select _id="Scan-Mode" class='select'></select>
+                                    <label for="">Scanning Active Time</label>
+                                    <input type="number" class="input-parameter" id="Scanning-Active-Time">
+                                    <label for="">Flash On Time</label>
+                                    <input type="number" class="input-parameter" id="Flash-On-Time">
+                                    <label for="">Flash Off Time</label>
+                                    <input type="number" class="input-parameter" id="Flash-Off-Time">
+                                    <label for="">Object Gone Time</label>
+                                    <input type="number" class="input-parameter" id="Object-Gone-Time">
+                                    <label for="">Stand Mode Sensitivity</label>
+                                    <select _id="Stand-Mode-Sensitivity" class='select'></select>
+                                    <label for="">Stand Base Detection</label>
+                                    <select _id="Stand-Base-Detection" class='select'></select>
+                                    <label for="">Stand Mode Flash</label>
+                                    <select _id="Stand-Mode-Flash" class='select'></select>
+                                </div>
+                                <button class="accordion">Mobile Phone Mode</button>
+                                <div class="panel">
+                                    <label for="">Mobile Phone Saturation Rate</label>
+                                    <input type="number" class="input-parameter" id="Mobile-Phone-Saturation-Rate">
+                                    <label for="">Mobile Phone Mode</label>
+                                    <select _id="Mobile-Phone-Mode" class='select'></select>
+                                </div>
+                                <button class="accordion">Pick Mode</button>
+                                <div class="panel">
+                                    <label for="">Pick Mode Aiming Duration Timer</label>
+                                    <select _id="Pick-Mode-Aiming-Duration-Timer" class='select'></select>
+                                    <label for="">Pick Mode Enable</label>
+                                    <select _id="Pick-Mode-Enable" class='select'></select>
+                                </div>
+                            </div>
+                            <!--Reading Parameters-->
 
-              <!--Radio Parameters-->
-              <div id="RadioParameters" class="config">
-                <button class="accordion">Radio Parameters</button>
-                <div class="panel">
-                  <label for="">Transmission Mode</label>
-                  <select _id="Transmission-Mode" class='select'></select>
-                  <label for="">Radio Protocol Timeout</label>
-                  <input type="number" class="input-parameter" id="Radio-Protocol-Timeout">
-                  <label for="">RF Batch Mode Transmit Delay</label>
-                  <select _id="RF-Batch-Mode-Transmit-Delay" class='select'></select>
+                            <!--Radio Parameters-->
+                            <div id="RadioParameters" class="config">
+                                <button class="accordion">Radio Parameters</button>
+                                <div class="panel">
+                                    <label for="">Transmission Mode</label>
+                                    <select _id="Transmission-Mode" class='select'></select>
+                                    <label for="">Radio Protocol Timeout</label>
+                                    <input type="number" class="input-parameter" id="Radio-Protocol-Timeout">
+                                    <label for="">RF Batch Mode Transmit Delay</label>
+                                    <select _id="RF-Batch-Mode-Transmit-Delay" class='select'></select>
+                                </div>
+                                <button class="accordion">Batch mode setting</button>
+                                <div class='panel'>
+                                    <label for="">Batch Mode</label>
+                                    <select _id="Batch-Mode" class='select'></select>
+                                </div>
+                                <button class="accordion">Radio Address Stamping</button>
+                                <div class='panel'>
+                                    <label for="">Source Radio Address Transmit</label>
+                                    <select _id="Source-Radio-Address-Transmit" class='select'></select>
+                                    <label for="">Source Radio Address Delimiter Character</label>
+                                    <div class='character-panel'>
+                                        <select _id='Source-Radio-Address-Delimiter-Character'
+                                            class="select character-select" style="width: fit-content;"></select>
+                                        <input type="text" class="input-character-select" value="" readonly="readonly">
+                                        <button class='delete-button'>&larr;</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Radio Parameter-->
+
+                            <!--Radio Beeper-->
+                            <div id="RadioBeeper" class="config">
+                                <button class="accordion">Beep Indication for Radio Activity</button>
+                                <div class="panel">
+                                    <label for="">BT Leash Mode Beep</label>
+                                    <input type="number" class="input-parameter" id="BT-Leash-Mode-Beep">
+                                    <label for="">Disconnect Beep</label>
+                                    <select _id="Disconnect-Beep" class='select'></select>
+                                    <label for="">Beep Volume</label>
+                                    <select _id="Beep-Volume" class='select'></select>
+                                    <label for="">Beep Frequency</label>
+                                    <select _id="Beep-Frequency" class='select'></select>
+                                    <label for="">Beep Duration</label>
+                                    <input type="number" class="input-parameter" id="Beep-Duration">
+                                    <label for="">ACK Beep</label>
+                                    <select _id="ACK-Beep" class='select'></select>
+                                </div>
+                            </div>
+                            <!--Radio Beeper-->
+
+                            <!--Compatibility Mode-->
+                            <div id="CompatibilityMode" class="config">
+                                <button class="accordion">Setup the Compatibility Mode</button>
+                                <div class="panel">
+                                    <label for="">Frequency Agility</label>
+                                    <input type="number" class="input-parameter" id="Frequency-Agility">
+                                    <label for="">Compatible Mode System Speed</label>
+                                    <select _id="Compatible-Mode-System-Speed" class='select'></select>
+                                </div>
+                            </div>
+                            <!--Compatibility Mode-->
+
+                            <!--Audio-->
+                            <div id="Audio" class="config">
+                                <button class="accordion">Audio</button>
+                                <div class="panel">
+                                    <label for="">Audio Jingle Enable</label>
+                                    <select _id="Audio-Jingle-Enable" class='select'></select>
+                                    <label for="">Converted Bit Rate</label>
+                                    <input type="number" class="input-parameter" id="Converted-Bit-Rate">
+                                    <label for="">Set Transmit Error Sound</label>
+                                    <input type="number" class="input-parameter" id="Set-Transmit-Error-Sound">
+                                </div>
+                            </div>
+                            <!-- Audio -->
+
+                            <!--Button-->
+                            <div id="Button" class="config">
+                                <button class="accordion">Button</button>
+                                <div class="panel">
+                                    <label for="">Base Station Button Enable/Disable</label>
+                                    <select _id="Base-Station-Button-Enable-Disable" class='select'></select>
+                                </div>
+                            </div>
+                            <!--Button-->
+
+                            <!--Beeper-->
+                            <div id="Beeper" class="config">
+                                <button class="accordion">Beeper</button>
+                                <div class="panel">
+                                    <label for="">Dock Detect Beep</label>
+                                    <select _id="Dock-Detect-Beep" class='select'></select>
+                                    <label for="">Good Read Beep Volume</label>
+                                    <select _id="Good-Read-Beep-Volume" class='select'></select>
+                                    <label for="">Good Read Beep Type</label>
+                                    <select _id="Good-Read-Beep-Type" class='select'></select>
+                                    <label for="">Power On Alert</label>
+                                    <select _id="Power-On-Alert" class='select'></select>
+                                    <label for="">Good Read Beep Length</label>
+                                    <input type="number" class="input-parameter" id="Good-Read-Beep-Length">
+                                    <label for="">Good Read Beep Frequency</label>
+                                    <select _id="Good-Read-Beep-Frequency" class='select'></select>
+                                </div>
+                            </div>
+                            <!--Beeper-->
+
+                            <!--Motion-->
+                            <div id="Motion" class="config">
+                                <button class="accordion">Motion</button>
+                                <div class="panel">
+                                    <label for="">Corded Stand Mode</label>
+                                    <select _id="Corded-Stand-Mode" class='select'></select>
+                                    <label for="">Motionless Timeout</label>
+                                    <input type="number" class="input-parameter" id="Motionless-Timeout">
+                                    <label for="">Motion Sensitivity</label>
+                                    <select _id="Motion-Sensitivity" class='select'></select>
+                                    <label for="">High Motion Immunity Enable/Disable</label>
+                                    <select _id="High-Motion-Immunity-Enable-Disable" class='select'></select>
+                                    <label for="">Motion Aiming Control</label>
+                                    <select _id="Motion-Aiming-Control" class='select'></select>
+                                </div>
+                            </div>
+                            <!--Motion-->
+
+
+                            <!--LED-->
+                            <div id="LED" class="config">
+                                <button class="accordion">Good Read LED</button>
+                                <div class="panel">
+                                    <label for="">RGB Good Read Enable</label>
+                                    <select _id="RGB-Good-Read-Enable" class='select'></select>
+                                    <label for="">RGB Good Read Color</label>
+                                    <select _id="RGB-Good-Read-Color" class='select'></select>
+                                    <label for="">Good Read LED Duration</label>
+                                    <input type="number" class="input-parameter" id="Good-Read-LED-Duration">
+                                    <label for="">Good Read: When to Indicate</label>
+                                    <select _id="Good-Read-When-to-Indicate" class='select'></select>
+                                </div>
+                                <button class="accordion">Green Spot</button>
+                                <div class="panel">
+                                    <label for="">Green Spot Duration</label>
+                                    <select _id="Green-Spot-Duration" class='select'></select><br />
+                                </div>
+                            </div>
+                            <!--LED-->
+
+                            <!--Camera Control-->
+                            <div id="CameraControl" class="config">
+                                <button class="accordion">Camera Control</button>
+                                <div class="panel">
+                                    <label for="">llumination System Power Enable</label>
+                                    <select _id="llumination-System-Power-Enable" class='select'></select>
+                                </div>
+                                <button class="accordion">Aiming Control</button>
+                                <div class="panel">
+                                    <label for="">Aiming Pointer</label>
+                                    <select _id="Aiming-Pointer" class='select'></select><br />
+                                </div>
+                                <button class="accordion">Exposure Control</button>
+                                <div class="panel">
+                                    <label for="">Exposure Gain</label>
+                                    <input type="number" class="input-parameter" id="Exposure-Gain">
+                                    <label for="">Exposure Mode</label>
+                                    <select _id="Exposure-Mode" class='select'></select><br />
+                                </div>
+                            </div>
+                            <!--Camera Control-->
+
+                            <!--Vibration-->
+                            <div id="Vibration" class="config">
+                                <button class="accordion">Vibration</button>
+                                <div class="panel">
+                                    <label for="">Good Read Vibration Duration</label>
+                                    <select _id="Good-Read-Vibration-Duration" class='select'></select>
+                                    <label for="">Good Read Vibration Enable</label>
+                                    <select _id="Good-Read-Vibration-Enable" class='select'></select>
+                                </div>
+                            </div>
+                            <!--Vibration-->
+
+                            <!--Decoding-->
+                            <div id="Decoding" class="config">
+                                <button class="accordion">Decoding</button>
+                                <div class="panel">
+                                    <label for="">Double Read Timeout</label>
+                                    <input type="number" class="input-parameter" id="Double-Read-Timeout">
+                                    <label for="">Decode Negative Image</label>
+                                    <select _id="Decode-Negative-Image" class='select'></select>
+                                    <label for="">Programming Mode Enable/Disable</label>
+                                    <select _id="Programming-Mode-Enable-Disable" class='select'></select>
+                                </div>
+                            </div>
+                            <!--Decoding-->
+
+                            <div id="DataFormat" class="config"></div>
+
+                            <div id="CodeIdentifiers" class="config"></div>
+
+                            <div id="CustomLinearCodeIDs" class="config"></div>
+
+                            <div id="Custom2DCodeIDs" class="config"></div>
+
+                            <!--Code Selection -->
+                            <div id="GeneralDecodingProperties" class="config"></div>
+
+                            <div id="CodeEANUPC" class="config"></div>
+
+                            <div id="EANUPCGlobalSettings" class="config"></div>
+
+                            <div id="GS1DataBarOmnidirectional" class="config"></div>
+
+                            <div id="GS1DataBarExpanded" class="config"></div>
+
+                            <div id="GS1DataBarLimited" class="config"></div>
+
+                            <div id="Code39" class="config"></div>
+
+                            <div id="Code128GS1128" class="config"></div>
+
+                            <div id="CodeISBT128" class="config"></div>
+
+                            <div id="CodeStandard2of5" class="config"></div>
+
+                            <div id="Compressed2of5" class="config"></div>
+
+                            <div id="Datalogic2of5" class="config"></div>
+
+                            <div id="Industrial2of5" class="config"></div>
+
+                            <div id="Interleaved2of5" class="config"></div>
+
+                            <div id="Matrix2of5" class="config"></div>
+
+                            <div id="Codabar" class="config"></div>
+
+                            <div id="Code11" class="config"></div>
+
+                            <div id="Code93" class="config"></div>
+
+                            <div id="MSI" class="config"></div>
+
+                            <div id="Plessey" class="config"></div>
+
+                            <div id="Code4" class="config"></div>
+
+                            <div id="Code5" class="config"></div>
+
+                            <div id="CodablockF" class="config"></div>
+
+                            <div id="2DCodeSelection" class="config"></div>
+
+                            <div id="UCCComposite" class="config"></div>
+
+                            <div id="Aztec" class="config"></div>
+
+                            <div id="ChinaSensibleCode" class="config"></div>
+
+                            <div id="Code49" class="config"></div>
+
+                            <div id="Code16K" class="config"></div>
+
+                            <div id="Datamatrix" class="config"></div>
+
+                            <div id="DotCode" class="config"></div>
+
+                            <div id="Maxicode" class="config"></div>
+
+                            <div id="PDF417" class="config"></div>
+
+                            <div id="MicroPDF" class="config"></div>
+
+                            <div id="QRCode" class="config"></div>
+
+                            <div id="MicroQRCode" class="config"></div>
+
+                            <div id="OCRCode" class="config"></div>
+
+                            <div id="PostalCodes" class="config"></div>
+
+                            <!--Code Selection -->
+
+                            <!-- <input type="file" id="CCFFile" onclick="this.value=null;" accept=".txt"> -->
+                        </div>
+                    </div>
                 </div>
-                <button class="accordion">Batch mode setting</button>
-                <div class='panel'>
-                  <label for="">Batch Mode</label>
-                  <select _id="Batch-Mode" class='select'></select>
+                <div class="config__config-option">
+                    <div class='config-option-code-selection'>
+                        <select name="" id="code-selection" placeholder='Code Selection'>
+                            <option value="datamatrix">Datamatrix</option>
+                            <option value="code128">Code 128</option>
+                        </select>
+                    </div>
+                    <div class="config-option-btn">
+                        <button type='button' class='button config-button' id='resetButton'>Reset</button>
+                        <button type="button" class="button config-button" id="allInOneButton">Generate</button>
+                    </div>
                 </div>
-                <button class="accordion">Radio Address Stamping</button>
-                <div class='panel'>
-                  <label for="">Source Radio Address Transmit</label>
-                  <select _id="Source-Radio-Address-Transmit" class='select'></select>
-                  <label for="">Source Radio Address Delimiter Character</label>
-                  <div class='character-panel'>
-                    <select _id='Source-Radio-Address-Delimiter-Character' class="select character-select"
-                      style="width: fit-content;"></select>
-                    <input type="text" class="input-character-select" value="" readonly="readonly">
-                    <button class='delete-button'>&larr;</button>
+            </article>
+            <div class="separator content__separator"></div>
+            <article class="content__barcode-display barcode-display-scrollbar">
+                <div style="max-height: 10rem;">
+                    <div id='barcode-display-1D'></div>
+                    <div id='barcode-display-2D'>
+                        <div id='barcode-display-datamatrix' class="barcode-display-2D"></div>
+                        <div id='barcode-display-allInOne' class="barcode-display-2D"></div>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+      <div class="modal" id="import-ccf-modal">
+          <div class="modal__content">
+              <div class="modal__header">
+                  <div class="modal__header--title">
+                      <h3>CUSTOM CONFIGURATION</h3>
                   </div>
-                </div>
               </div>
-              <!--Radio Parameter-->
-
-              <!--Radio Beeper-->
-              <div id="RadioBeeper" class="config">
-                <button class="accordion">Beep Indication for Radio Activity</button>
-                <div class="panel">
-                  <label for="">BT Leash Mode Beep</label>
-                  <input type="number" class="input-parameter" id="BT-Leash-Mode-Beep">
-                  <label for="">Disconnect Beep</label>
-                  <select _id="Disconnect-Beep" class='select'></select>
-                  <label for="">Beep Volume</label>
-                  <select _id="Beep-Volume" class='select'></select>
-                  <label for="">Beep Frequency</label>
-                  <select _id="Beep-Frequency" class='select'></select>
-                  <label for="">Beep Duration</label>
-                  <input type="number" class="input-parameter" id="Beep-Duration">
-                  <label for="">ACK Beep</label>
-                  <select _id="ACK-Beep" class='select'></select>
-                </div>
-              </div>
-              <!--Radio Beeper-->
-
-              <!--Compatibility Mode-->
-              <div id="CompatibilityMode" class="config">
-                <button class="accordion">Setup the Compatibility Mode</button>
-                <div class="panel">
-                  <label for="">Frequency Agility</label>
-                  <input type="number" class="input-parameter" id="Frequency-Agility">
-                  <label for="">Compatible Mode System Speed</label>
-                  <select _id="Compatible-Mode-System-Speed" class='select'></select>
-                </div>
-              </div>
-              <!--Compatibility Mode-->
-
-              <!--Audio-->
-              <div id="Audio" class="config">
-                <button class="accordion">Audio</button>
-                <div class="panel">
-                  <label for="">Audio Jingle Enable</label>
-                  <select _id="Audio-Jingle-Enable" class='select'></select>
-                  <label for="">Converted Bit Rate</label>
-                  <input type="number" class="input-parameter" id="Converted-Bit-Rate">
-                  <label for="">Set Transmit Error Sound</label>
-                  <input type="number" class="input-parameter" id="Set-Transmit-Error-Sound">
-                </div>
-              </div>
-              <!-- Audio -->
-
-              <!--Button-->
-              <div id="Button" class="config">
-                <button class="accordion">Button</button>
-                <div class="panel">
-                  <label for="">Base Station Button Enable/Disable</label>
-                  <select _id="Base-Station-Button-Enable-Disable" class='select'></select>
-                </div>
-              </div>
-              <!--Button-->
-
-              <!--Beeper-->
-              <div id="Beeper" class="config">
-                <button class="accordion">Beeper</button>
-                <div class="panel">
-                  <label for="">Dock Detect Beep</label>
-                  <select _id="Dock-Detect-Beep" class='select'></select>
-                  <label for="">Good Read Beep Volume</label>
-                  <select _id="Good-Read-Beep-Volume" class='select'></select>
-                  <label for="">Good Read Beep Type</label>
-                  <select _id="Good-Read-Beep-Type" class='select'></select>
-                  <label for="">Power On Alert</label>
-                  <select _id="Power-On-Alert" class='select'></select>
-                  <label for="">Good Read Beep Length</label>
-                  <input type="number" class="input-parameter" id="Good-Read-Beep-Length">
-                  <label for="">Good Read Beep Frequency</label>
-                  <select _id="Good-Read-Beep-Frequency" class='select'></select>
-                </div>
-              </div>
-              <!--Beeper-->
-
-              <!--Motion-->
-              <div id="Motion" class="config">
-                <button class="accordion">Motion</button>
-                <div class="panel">
-                  <label for="">Corded Stand Mode</label>
-                  <select _id="Corded-Stand-Mode" class='select'></select>
-                  <label for="">Motionless Timeout</label>
-                  <input type="number" class="input-parameter" id="Motionless-Timeout">
-                  <label for="">Motion Sensitivity</label>
-                  <select _id="Motion-Sensitivity" class='select'></select>
-                  <label for="">High Motion Immunity Enable/Disable</label>
-                  <select _id="High-Motion-Immunity-Enable-Disable" class='select'></select>
-                  <label for="">Motion Aiming Control</label>
-                  <select _id="Motion-Aiming-Control" class='select'></select>
-                </div>
-              </div>
-              <!--Motion-->
-
-
-              <!--LED-->
-              <div id="LED" class="config">
-                <button class="accordion">Good Read LED</button>
-                <div class="panel">
-                  <label for="">RGB Good Read Enable</label>
-                  <select _id="RGB-Good-Read-Enable" class='select'></select>
-                  <label for="">RGB Good Read Color</label>
-                  <select _id="RGB-Good-Read-Color" class='select'></select>
-                  <label for="">Good Read LED Duration</label>
-                  <input type="number" class="input-parameter" id="Good-Read-LED-Duration">
-                  <label for="">Good Read: When to Indicate</label>
-                  <select _id="Good-Read-When-to-Indicate" class='select'></select>
-                </div>
-                <button class="accordion">Green Spot</button>
-                <div class="panel">
-                  <label for="">Green Spot Duration</label>
-                  <select _id="Green-Spot-Duration" class='select'></select><br />
-                </div>
-              </div>
-              <!--LED-->
-
-              <!--Camera Control-->
-              <div id="CameraControl" class="config">
-                <button class="accordion">Camera Control</button>
-                <div class="panel">
-                  <label for="">llumination System Power Enable</label>
-                  <select _id="llumination-System-Power-Enable" class='select'></select>
-                </div>
-                <button class="accordion">Aiming Control</button>
-                <div class="panel">
-                  <label for="">Aiming Pointer</label>
-                  <select _id="Aiming-Pointer" class='select'></select><br />
-                </div>
-                <button class="accordion">Exposure Control</button>
-                <div class="panel">
-                  <label for="">Exposure Gain</label>
-                  <input type="number" class="input-parameter" id="Exposure-Gain">
-                  <label for="">Exposure Mode</label>
-                  <select _id="Exposure-Mode" class='select'></select><br />
-                </div>
-              </div>
-              <!--Camera Control-->
-
-              <!--Vibration-->
-              <div id="Vibration" class="config">
-                <button class="accordion">Vibration</button>
-                <div class="panel">
-                  <label for="">Good Read Vibration Duration</label>
-                  <select _id="Good-Read-Vibration-Duration" class='select'></select>
-                  <label for="">Good Read Vibration Enable</label>
-                  <select _id="Good-Read-Vibration-Enable" class='select'></select>
-                </div>
-              </div>
-              <!--Vibration-->
-
-              <!--Decoding-->
-              <div id="Decoding" class="config">
-                <button class="accordion">Decoding</button>
-                <div class="panel">
-                  <label for="">Double Read Timeout</label>
-                  <input type="number" class="input-parameter" id="Double-Read-Timeout">
-                  <label for="">Decode Negative Image</label>
-                  <select _id="Decode-Negative-Image" class='select'></select>
-                  <label for="">Programming Mode Enable/Disable</label>
-                  <select _id="Programming-Mode-Enable-Disable" class='select'></select>
-                </div>
-              </div>
-              <!--Decoding-->
-
-              <!--Data Format-->
-              <div id="DataFormat" class='config'>
-                <button class='accordion'>Data Format Global Parameters</button>
-                <div class='panel'>
-                  <label for="">Case Conversion</label>
-                  <select _id="Case-Conversion" class='select'></select>
-                  <label for="">Global Prefix</label>
-                  <div class='character-panel'>
-                    <select _id='Global-Prefix' class="select character-select" style="width: fit-content;"></select>
-                    <input type="text" class="input-character-select" value="" readonly="readonly">
-                    <button class='delete-button'>&larr;</button>
+              <div class="modal__body">
+                  <div class="modal__body--content">
+                      <textarea name="" class="modal__body--content-areatext" id="import-textarea" cols="30"
+                          rows="10"></textarea>
                   </div>
-                  <label for="">Global Suffix</label>
-                  <div class='character-panel'>
-                    <select _id='Global-Suffix' class="select character-select" style="width: fit-content;"></select>
-                    <input type="text" class="input-character-select" value="" readonly="readonly">
-                    <button class='delete-button'>&larr;</button>
+                  <div class="modal__body--file">
+                      <label for="ccf-filechooser" class="filechooser">Choose a custom configuration file (.txt)...
+                      </label>
+                      <input type="file" name="" id="ccf-filechooser" onclick="this.value=null">
                   </div>
-                </div>
-                <button class='accordion'>Character Replacement</button>
-                <div class='panel'>
-                  <label for="">Character Conversion</label>
-                  <div class='character-panel'>
-                    <select _id='Character-Conversion' class="select character-select"
-                      style="width: fit-content;"></select>
-                    <input type="text" class="input-character-select" value="" readonly="readonly">
-                    <button class='delete-button'>&larr;</button>
+                  <div class="modal__body--button">
+                      <button class="modal-button modal__body--button-generate" id="import-button">Generate</button>
+                      <button class="modal-button modal__body--button-cancel"
+                          id="import-ccf-modal--cancel">Cancel</button>
                   </div>
-                </div>
               </div>
-              <!--Data Format-->
-
-              <!--Code Identifiers-->
-              <div id="CodeIdentifiers" class="config">
-                <button class="accordion">Global Label ID Parameters</button>
-                <div class="panel">
-                  <label for="">Global AIM ID</label>
-                  <select _id="Global-AIM-ID" class='select'></select>
-                  <label for="">Set Global Mid Label ID Characters</label>
-                  <div class='character-panel'>
-                    <select _id='Set-Global-Mid-Label-ID-Characters' class="select character-select"
-                      style="width: fit-content;"></select>
-                    <input type="text" class="input-character-select" value="" readonly="readonly">
-                    <button class='delete-button'>&larr;</button>
+          </div>
+      </div>
+      <div class="modal" id="export-ccf-modal">
+          <div class="modal__content">
+              <div class="modal__header">
+                  <div class="modal__header--title">
+                      <h3>EXPORT CUSTOM CONFIGURATION</h3>
                   </div>
-                  <label for="">Label ID Control</label>
-                  <select _id="Label-ID-Control" class='select'></select>
-                </div>
-                <button class="accordion" id='Symbolology-AIM-ID-Tab'>Symbolology AIM ID</button>
-                <div class="panel">
-                </div>
               </div>
-
-              <!--Code Identifiers-->
-
-              <div id="CustomLinearCodeIDs" class="config"></div>
-        
-              <div id="Custom2DCodeIDs" class="config"></div>
-
-              <!--Code Identifiers-->
-
-              <!--Code Selection -->
-              <div id="GeneralDecodingProperties" class="config"></div>
-              
-              <div id="CodeEANUPC" class="config"></div>
-
-              <div id="EANUPCGlobalSettings" class="config"></div>
-
-              <div id="GS1DataBarOmnidirectional" class="config"></div>
-
-              <div id="GS1DataBarExpanded" class="config"></div>
-              
-              <div id="GS1DataBarLimited" class="config"></div>
-
-              <div id="Code39" class="config"></div>
-
-              <div id="Code128GS1128" class="config"></div>
-
-              <div id="CodeISBT128" class="config"></div>
-
-              <div id="CodeStandard2of5" class="config"></div>
-
-              <div id="Compressed2of5" class="config"></div>
-
-              <div id="Datalogic2of5" class="config"></div>
-
-              <div id="Industrial2of5" class="config"></div>
-
-              <div id="Interleaved2of5" class="config"></div>
-
-              <div id="Matrix2of5" class="config"></div>
-
-              <div id="Codabar" class="config"></div>
-
-              <div id="Code11" class="config"></div>
-
-              <div id="Code93" class="config"></div>
-
-              <div id="MSI" class="config"></div>
-
-              <div id="Plessey" class="config"></div>
-
-              <div id="Code4" class="config"></div>
-
-              <div id="Code5" class="config"></div>
-              
-              <div id="CodablockF" class="config"></div>
-              
-              <div id="2DCodeSelection" class="config"></div>
-
-              <div id="UCCComposite" class="config"></div>
-              
-              <div id="Aztec" class="config"></div>
-              
-              <div id="ChinaSensibleCode" class="config"></div>
-              
-              <div id="Code49" class="config"></div>
-              
-              <div id="Code16K" class="config"></div>
-
-              <div id="Datamatrix" class="config"></div>
-              
-              <div id="DotCode" class="config"></div>
-              
-              <div id="Maxicode" class="config"></div>
-              
-              <div id="PDF417" class="config"></div>
-              
-              <div id="MicroPDF" class="config"></div>
-              
-              <div id="QRCode" class="config"></div>
-              
-              <div id="MicroQRCode" class="config"></div>
-              
-              <div id="PostalCodes" class="config"></div>
-              
-              <!--Code Selection -->
-
-              <!-- <input type="file" id="CCFFile" onclick="this.value=null;" accept=".txt"> -->
-            </div>
+              <div class="modal__body">
+                  <div class="modal__body--content">
+                      <textarea name="" class="modal__body--content-areatext" id="export-textarea" cols="30"
+                          rows="10"></textarea>
+                  </div>
+                  <div class="modal__body--button">
+                      <button class="modal-button modal__body--button-generate" id="export-button">Export</button>
+                      <button class="modal-button modal__body--button-cancel"
+                          id="export-ccf-modal--cancel">Cancel</button>
+                  </div>
+              </div>
           </div>
-        </div>
-        <div class="row config-option-row">
-          <div class="col-sm-6">
-            <div class='config-option-radio-btn'>
-              <select name="" id="code-selection" placeholder='Code Selection'>
-                <option value="datamatrix">Datamatrix</option>
-                <option value="code128">Code 128</option>
-              </select>
-            </div>
+      </div>
+      <div class="modal" id="ASCII-modal">
+          <div class="modal__content">
+              <div class="modal__header">
+                  <div class="modal__header--title">
+                      <h3>ASCII Table</h3>
+                  </div>
+              </div>
+              <div class="modal__body">
+                  <div class="modal__body--content ascii-table">
+                      <div>
+                          <input type="text" data-maxlen="" data-value="" value="" id="ASCII-input-bar">
+                          <button class='delete-button'>&larr;</button>
+                      </div>
+                  </div>
+                  <div class="modal__body--button">
+                      <button class="modal-button modal__body--button-generate" id="ASCII-ok">Ok</button>
+                      <button class="modal-button modal__body--button-cancel" id="ASCII-cancel">Cancel</button>
+                  </div>
+              </div>
           </div>
-          <div class="config-option-btn col-sm-6">
-            <button type='button' class='btn btn-primary reset-button' id='resetButton'>Reset</button>
-            <button type="button" class="btn btn-primary function-button" id="allInOneButton">Generate</button>
-          </div>
-        </div>
       </div>
-
-        <div class='scrollbar-barcode force-overflow-barcode col-sm-8 barcode-display'>
-          <div id='barcode-display-1D'></div>
-          <div id='barcode-display-2D' class='row'>
-            <div id='barcode-display-datamatrix' class='col-sm-7'></div>
-            <div id='barcode-display-allInOne' class='col-sm-5'></div>
-          </div>
-        </div>
-
-    </div>
-  </div>
-
-  <div class="modal" id="import-ccf-modal">
-    <div class="modal__content">
-      <div class="modal__header">
-        <div class="modal__header--title">
-          <h3>CUSTOM CONFIGURATION</h3>
-        </div>
-      </div>
-      <div class="modal__body">
-        <div class="modal__body--content">
-          <textarea name="" class="modal__body--content-areatext" id="import-textarea" cols="30" rows="10"></textarea>
-        </div>
-        <div class="modal__body--file">
-          <label for="ccf-filechooser" class="filechooser" >Choose a custom configuration file (.txt)... </label>
-          <input type="file" name="" id="ccf-filechooser" onclick="this.value=null">
-        </div>
-        <div class="modal__body--button">
-          <button class="modal-button modal__body--button-generate" id="import-button">Generate</button>
-          <button class="modal-button modal__body--button-cancel" id="import-ccf-modal--cancel">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal" id="export-ccf-modal">
-    <div class="modal__content">
-      <div class="modal__header">
-        <div class="modal__header--title">
-          <h3>EXPORT CUSTOM CONFIGURATION</h3>
-        </div>
-      </div>
-      <div class="modal__body">
-        <div class="modal__body--content">
-          <textarea name="" class="modal__body--content-areatext" id="export-textarea" cols="30"
-            rows="10"></textarea>
-        </div>
-        <div class="modal__body--button">
-          <button class="modal-button modal__body--button-generate" id="export-button">Export</button>
-          <button class="modal-button modal__body--button-cancel" id="export-ccf-modal--cancel">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal" id="ASCII-modal">
-    <div class="modal__content">
-      <div class="modal__header">
-        <div class="modal__header--title">
-          <h3>ASCII Table</h3>
-        </div>
-      </div>
-      <div class="modal__body">
-        <div class="modal__body--content ascii-table">
-          <div>
-            <input type="text" data-maxlen="" data-value="" value="" id="ASCII-input-bar">
-            <button class='delete-button'>&larr;</button>
-          </div>
-        </div>
-        <div class="modal__body--button">
-          <button class="modal-button modal__body--button-generate" id="ASCII-ok">Ok</button>
-          <button class="modal-button modal__body--button-cancel" id="ASCII-cancel">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script src="./include/jquery-3.4.1.min.js"></script>
-  <script src="./include/jquery-barcode.js"></script>
-  <script src="./include/JsBarcode.all.min.js"></script>
-  <script src="./include/FileSaver.min.js"></script>
-  <script src="./js/index.js" charset="utf-8"></script>
+      <script src="./include/jquery-3.4.1.min.js"></script>
+      <script src="./include/jquery-barcode.js"></script>
+      <script src="./include/JsBarcode.all.min.js"></script>
+      <script src="./include/FileSaver.min.js"></script>
+      <script src="./include/jquery-resizable.js"></script>
+      <script src="./include/jquery-resizableTableColumns.js"></script>
+      <script src="./js/_index.js" charset="utf-8"></script>
 </body>
 
 </html>
+

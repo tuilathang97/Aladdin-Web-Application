@@ -1,3 +1,12 @@
+$(".content__config").resizable({
+  handleSelector: ".content__separator",
+  resizeHeight: false
+});
+$(".config__tree-view").resizable({
+  handleSelector: ".config__separator",
+  resizeWidth: false,
+  resizeHeight: true
+});
 /*jshint esversion: 8 */
 let parameters = [];
 let tables = [];
@@ -57,7 +66,7 @@ function _parsingParameters(xml) {
   });
 }
 
-function _parsingTables( xml ) {
+function _parsingTables(xml) {
   $(xml).find('table').each(function () {
     let _tableName = $(this).attr('name');
     let _value = '';
@@ -75,7 +84,7 @@ function _parsingTables( xml ) {
   });
 }
 
-function _parsingTabs( xml ) {
+function _parsingTabs(xml) {
   $(xml).find('tab').each(function () {
     let _title = $(this).attr('title');
     let _type = '';
@@ -91,8 +100,8 @@ function _parsingTabs( xml ) {
   });
 }
 
-async function _parsingXML( xml ) {
-  await _parsingParameters( xml );
+async function _parsingXML(xml) {
+  await _parsingParameters(xml);
   _parsingTables(xml);
   _parsingTabs(xml);
 }
@@ -100,30 +109,16 @@ async function _parsingXML( xml ) {
 function getXML() {
   $.ajax({
     type: 'GET',
-    url: "./conf/commonConfig.xml",
+    url: "../web/conf/commonConfig.xml",
     dataType: 'xml',
     success: async function (xml) {
-      console.time('parsingxml');
       await _parsingXML(xml);
-      console.timeEnd('parsingxml')
-      console.time('populatingSelectDropdown');
       populatingSelectDropdown();
-      console.timeEnd('populatingSelectDropdown')
-      console.time('creatingTabElements');
-      creatingTabElements("Symbolology-AIM-ID-Tab");
-      console.timeEnd('creatingTabElements')
-      console.time('createTreeFolder');
+      // creatingTabElements("Symbolology-AIM-ID-Tab");
       createTreeFolder('Code Selection', 'treeCodeSelection', xml);
-      console.timeEnd('createTreeFolder')
-      console.time('creatingTab');
       creatingTab();
-      console.timeEnd('creatingTab')
-      console.time('addingInputElements');
       addingInputElements();
-      console.timeEnd('addingInputElements')
-      console.time('eventInit');
       eventInit();
-      console.timeEnd('eventInit')
     }
   });
 }
@@ -256,7 +251,7 @@ function _populatingSelectDropdown(selectID, nameNodeInXML) {
   let select = $('[_id="' + selectID + '"]');
   let parameterNames = parameters.map(parameter => parameter.name);
   var tableNames = tables.map(table => table.tableName);
-  for( let parameterName of parameterNames) {
+  for (let parameterName of parameterNames) {
     if (parameterName == nameNodeInXML) {
       let index = parameters.findIndex(parameter => parameter.name == nameNodeInXML);
       let tableRef = parameters[index].tableRef;
@@ -311,7 +306,7 @@ function addingInputElements() {
   $('.config').find('.input-parameter').each(function () {
     var _id = $(this).attr('id');
     var parameterIds = parameters.map(parameter => parameter.id);
-    for(let parameterId of parameterIds){
+    for (let parameterId of parameterIds) {
       if (_id == parameterId) {
         let index = parameters.findIndex(parameter => parameter.id == _id);
         let code = parameters[index].code;
@@ -331,6 +326,8 @@ function addingInputElements() {
 }
 
 function creatingTab() {
+  _creatingTab('DataFormat');
+  _creatingTab('CodeIdentifiers');
   _creatingTab('CustomLinearCodeIDs');
   _creatingTab('Custom2DCodeIDs');
   _creatingTab('GeneralDecodingProperties');
@@ -370,6 +367,7 @@ function creatingTab() {
   _creatingTab('MicroPDF');
   _creatingTab('QRCode');
   _creatingTab('MicroQRCode');
+  _creatingTab('OCRCode');
   _creatingTab('PostalCodes');
 }
 function _creatingTab(configID) {
@@ -381,20 +379,19 @@ function _creatingTab(configID) {
   for (let tab of tabs) {
     if (tab.title == configID) {
       _ID = tab.text;
-      ID = _ID.replace(/\//g, ' ').replace(/ /g, '-').replace(/\(|\)/g,'') + '-Tab-' + configID;
+      ID = _ID.replace(/\//g, ' ').replace(/ /g, '-').replace(/\(|\)/g, '') + '-Tab-' + configID;
       docFragment.push('<button class="accordion" id="' + ID + '">' + _ID + '</button>');
-      docFragment.push('<div class="panel"></div>');    
+      docFragment.push('<div class="panel"></div>');
       IDlist.push(ID);
     }
   }
   $this.append(docFragment);
-  for( let index in IDlist){
+  for (let index in IDlist) {
     creatingTabElements(IDlist[index]);
   }
 }
 
 function creatingTabElements(tabID) {
-  
   let $this = $('#' + tabID).next('.panel');
   const TABLE_REFERENCE_REG_EXP = /^\w+/;
   let docFragmentCodeTable = [];
@@ -402,6 +399,7 @@ function creatingTabElements(tabID) {
   let docFragmentExeNumericRange = [];
   let codeTableIDList = [];
   let ASCIITableIDList = [];
+
   for (let parameter of parameters) {
     if (parameter.tab == tabID) {
       let _ID = parameter.text;
@@ -413,7 +411,7 @@ function creatingTabElements(tabID) {
       let code = parameter.code;
       /*use for ascii table */
       let check = $('[_id="' + ID + '"]').length > 0 ? true : false;
-      if( check ){
+      if (check) {
         copyingExistingElement($this, ID);
       } else {
         switch (tableRef) {
@@ -421,25 +419,12 @@ function creatingTabElements(tabID) {
             docFragmentCodeTable.push("<label> " + _ID + " </label>");
             docFragmentCodeTable.push('<select class="select" _id="' + ID + '"></select>');
             codeTableIDList.push({
-              id : ID,
-              name : parameter.name
+              id: ID,
+              name: parameter.name
             })
           }
             break;
-          // case "ASCIITable": {
-          //   docFragmentASCIITable.push(`<label>${_ID}</label>
-          //   <div class='character-panel'>
-          //   <select _id='${ID}' class='select character-select' style='width: fit-content;'></select>
-          //   <input type='text' class='input-character-select' value readonly='readonly'>
-          //   <button class='delete-button'>&larr;</button>
-          //   </div>`);
-          //   ASCIITableIDList.push({
-          //     id: ID,
-          //     name: parameter.name
-          //   })
-          // }
-          //   break;
-          case "ASCIITable" : {
+          case "ASCIITable": {
             docFragmentASCIITable.push(`<label>${_ID}</label>
             <div class='character-panel'>
             <button data-id='${ID}' class='ASCII-btn'>ASCII Character</button>
@@ -450,6 +435,7 @@ function creatingTabElements(tabID) {
               name: parameter.name,
             })
           }
+            break;
           case 'exeNumericRange': {
             docFragmentExeNumericRange.push(`<label>${_ID}</label><input type="number" class="input-parameter" id=${ID}>`);
           }
@@ -460,21 +446,20 @@ function creatingTabElements(tabID) {
   }
   if (docFragmentCodeTable.length > 0) {
     $this.append(docFragmentCodeTable);
-    for(let index in codeTableIDList){
+    for (let index in codeTableIDList) {
       _populatingSelectDropdown(codeTableIDList[index].id, codeTableIDList[index].name);
     }
-  } else if ( docFragmentASCIITable.length > 0 ){
+  }
+  if (docFragmentASCIITable.length > 0) {
     $this.append(docFragmentASCIITable);
-    // for (let index in ASCIITableIDList) {
-    //   _populatingSelectDropdown(ASCIITableIDList[index].id, ASCIITableIDList[index].name);
-    // }
-  } else {
+  }
+  if (docFragmentExeNumericRange.length > 0) {
     $this.append(docFragmentExeNumericRange);
   }
-  
+
 }
 
-function copyingExistingElement ( parentTab, ID ){
+function copyingExistingElement(parentTab, ID) {
   let select = $('[_id="' + ID + '"]');
   let label = select.prev();
 
@@ -522,7 +507,13 @@ $(document).ready(function () {
   getXML();
 });
 
-
+// $(function () {
+//   $(".resizable--panel").resizable({
+//     containment: ".container-fluid",
+//     minHeight: 70,
+//     minWidth: 200
+//   });
+// });
 
 
 function openTab(tabName, tabId) {
@@ -612,7 +603,7 @@ function buttonEvent() {
   $('#allInOneButton').on('click', function () {
     codeSelection('', '', true, true);
   });
-  $('.ASCII-btn').on('click', function() {
+  $('.ASCII-btn').on('click', function () {
     //get max len$('.ASCII-btn').on('click', function () {
     let input = $(this).next();
     let id = $(this).data('id');
@@ -623,36 +614,34 @@ function buttonEvent() {
     toggleASCIIModal();
   });
 }
-function ASCIEvent() {
+function ASCIIEvent() {
   creatingASCIIModal();
   ASCIICharacterSelectionEvent();
   ASCIISelectedEvent();
 }
 
-function creatingASCIIModal () {
+function creatingASCIIModal() {
   let asciiModal = $('#ASCII-modal');
   let content = asciiModal.find('.modal__body--content');
-  console.log(content);
   let tempTables = tables.filter(table => table.tableName === 'ASCIITable');
   let buttonFragment = tempTables.map(table => {
     return `<button class='ASCII-character' data-value='${table.value}'>${table.elementName}</button>`
   })
-  console.log(buttonFragment);
   content.append(buttonFragment);
 }
 
-function ASCIICharacterSelectionEvent () {
-  $('.ASCII-character').on('click', function() {
+function ASCIICharacterSelectionEvent() {
+  $('.ASCII-character').on('click', function () {
     const inputBar = $('#ASCII-input-bar');
     let value = inputBar.attr('data-value');
     let maxLen = inputBar.data('maxlen');
-    let text = inputBar.attr('value'); 
-    
-    if(value == undefined){
+    let text = inputBar.attr('value');
+
+    if (value == undefined) {
       value = '';
     }
 
-    if( (value.length/2) < parseInt(maxLen)) {
+    if ((value.length / 2) < parseInt(maxLen)) {
       value += $(this).data('value');
       text += '[' + $(this).text() + ']';
       inputBar.attr('data-value', value);
@@ -664,33 +653,38 @@ function ASCIICharacterSelectionEvent () {
   });
 }
 
-function ASCIISelectedEvent () { 
-  $('#ASCII-ok').on('click', function() {
+function ASCIISelectedEvent() {
+  $('#ASCII-ok').on('click', function () {
     //value attr display text and data-value attr display value 
-    $('button').each( function (){
+    $('button').each(function () {
       let buttonClicked = $(this);
       let input = $('#ASCII-input-bar');
       let value = input.attr('data-value');
       let text = input.attr('value');
       let id = input.attr('data-id');
-      if( buttonClicked.attr('data-id') === id ){
+      if (buttonClicked.attr('data-id') === id) {
         console.log(buttonClicked);
         buttonClicked.next().attr('value', text);
         buttonClicked.next().attr('data-value', value);
         buttonClicked.next().attr('data-id', id);
       }
     })
-    $('#ASCII-input-bar').attr('value', '');
-    $('#ASCII-input-bar').attr('data-maxLen', '');
-    $('#ASCII-input-bar').attr('data-value', '');
-    $('#ASCII-input-bar').attr('data-id', '');
+    resetASCIISelectedCharacter();
     // $('button').data('id') === $('#' + id).next().attr('value', text);
     // $('#' + id).next().attr('data-value', value);
     toggleASCIIModal();
   });
-  $('#ASCII-cancel').on('click', function() {
+  $('#ASCII-cancel').on('click', function () {
+    resetASCIISelectedCharacter();
     toggleASCIIModal();
   });
+}
+
+function resetASCIISelectedCharacter() {
+  $('#ASCII-input-bar').attr('value', '');
+  $('#ASCII-input-bar').attr('data-maxLen', '');
+  $('#ASCII-input-bar').attr('data-value', '');
+  $('#ASCII-input-bar').attr('data-id', '');
 }
 function accordion() {
   $('.accordion').on('click', function () {
@@ -743,11 +737,11 @@ function characterSelection() {
     else {
       value = value.slice(0, value.length - 2);
       console.log(value);
-      
-      let theLastChar = text.charAt( text.length - 1 );
-      let thePrevLastChar = text.charAt ( text.length - 2);
-      let thePrevofPrevLastChar = text.charAt ( text.length - 3);
-      if( thePrevLastChar === theLastChar || thePrevLastChar === thePrevofPrevLastChar){
+
+      let theLastChar = text.charAt(text.length - 1);
+      let thePrevLastChar = text.charAt(text.length - 2);
+      let thePrevofPrevLastChar = text.charAt(text.length - 3);
+      if (thePrevLastChar === theLastChar || thePrevLastChar === thePrevofPrevLastChar) {
         text = text.slice(0, -3);
       } else {
         text = text.slice(0, -1).slice(0, text.lastIndexOf('['));
@@ -763,7 +757,7 @@ function eventInit() {
   treeViewEvent();
   openConfig();
   buttonEvent();
-  ASCIEvent();
+  ASCIIEvent();
   accordion();
   characterSelection();
   $('#treeConfiguration').click();
@@ -844,7 +838,7 @@ function linearBarcodeGenerate() {
     }
   });
   $('.config').find('.input-parameter').each(function () {
-    var id = $(this).attr('_id');
+    var id = $(this).attr('id');
     var code = $(this).attr('code');
     inputWriteConfig = $(this).val();
     if (inputWriteConfig != '') {
@@ -859,7 +853,7 @@ function linearBarcodeGenerate() {
     let maxLen = $(this).attr('data-maxlen');
     let value = $(this).attr('data-value');
     let inputWriteConfig = '';
-    if (value == undefined) {} else if (value != '') {
+    if (value == undefined) { } else if (value != '') {
       for (let i = ((value.length) / 2); i < parseInt(maxLen); i++) {
         value += '00';
       }
@@ -906,7 +900,7 @@ function twoDemensionBarcodeGenerate() {
     let value = $(this).attr('data-value');
     let inputWriteConfig = '';
 
-    if (value == undefined) {} else if (value != '') {
+    if (value == undefined) { } else if (value != '') {
       for (let i = (value.length) / 2; i < parseInt(maxLen); i++) {
         value += '00';
       }
@@ -939,43 +933,43 @@ const export_modalCloseButton = document.getElementById('export-ccf-modal--cance
 
 const ASCIImodal = document.getElementById('ASCII-modal')
 
-function toggleASCIIModal (){
+function toggleASCIIModal() {
   ASCIImodal.classList.toggle("modal-active");
-  
+
 }
-function toggleModal( target ){
-  switch( target ){
-    case "import":  {
+function toggleModal(target) {
+  switch (target) {
+    case "import": {
       import_modal.classList.toggle("modal-active");
       $('#import-textarea').html('');
-    } 
+    }
       break;
     case "export": {
       let items = exportCustomConfiguration();
       let textBox = document.getElementById('export-textarea');
       let text = '';
-      for(let i = 0; i < items.length; i++){
+      for (let i = 0; i < items.length; i++) {
         text = text + items[i] + '\n';
       }
       textBox.textContent = text;
       export_modal.classList.toggle("modal-active");
-      
+
     }
       break;
   }
-  
+
 }
 
-function windowOnClick( e ) {
+function windowOnClick(e) {
   e.target === import_modal ? toggleModal("import") : {};
   e.target === export_modal ? toggleModal("export") : {};
 }
 
 
 function exportCustomConfiguration() {
-  
+
   let configs = [];
-  
+
   let configNames = [];
 
   let items = []
@@ -984,32 +978,32 @@ function exportCustomConfiguration() {
 
   } else if ($('#code-selection').val() == 'datamatrix') {
 
-      $('#barcode-display-datamatrix').children("h2").each(function () {
+    $('#barcode-display-datamatrix').children("h2").each(function () {
 
-        configNames.push( $(this).text() + ':' );
+      configNames.push($(this).text() + ':');
 
-      });
+    });
 
-      $('#barcode-display-datamatrix').find("reader").each(function () {
-        let temp = $(this).text();
-        //remove $P, ,P 
-        temp = temp.substring( temp.indexOf(',') + 1,temp.lastIndexOf(',') ); 
+    $('#barcode-display-datamatrix').find("reader").each(function () {
+      let temp = $(this).text();
+      //remove $P, ,P 
+      temp = temp.substring(temp.indexOf(',') + 1, temp.lastIndexOf(','));
 
-        temp = '$' + temp;
+      temp = '$' + temp;
 
-        configs.push( temp );
-      })
+      configs.push(temp);
+    })
 
   }
-  
-  for(let i in configs){
+
+  for (let i in configs) {
 
     let temp = configs[i] + ' ; ' + configNames[i];
-    if( temp.includes('Undefined Config')){
+    if (temp.includes('Undefined Config')) {
       temp = temp.slice(0, temp.indexOf(';') - 1);
     }
     items.push(temp);
-    
+
   }
 
   return items;
@@ -1018,7 +1012,7 @@ function exportCustomConfiguration() {
 
 
 
-function CFFEventInit () {
+function CFFEventInit() {
 
   let $codeSelectionValue = $('#code-selection').val();
 
@@ -1033,15 +1027,15 @@ function CFFEventInit () {
   export_modalCloseButton.addEventListener("click", function () {
     toggleModal('export');
   });
-  
+
   importCCFFile.addEventListener("click", () => {
     toggleModal('import');
   });
-  
+
   exportCCFFile.addEventListener("click", () => {
     toggleModal('export');
   });
-  
+
   // window.addEventListener("click", windowOnClick);
 
   CFFFileChooser.addEventListener("change", function () {
@@ -1053,7 +1047,7 @@ function CFFEventInit () {
       var reader = new FileReader();
       var text = '';
       reader.addEventListener('load', function (e) {
-        
+
         file = e.target.result;
         $('#import-textarea').val('');
         $('#import-textarea').val(file);
@@ -1062,13 +1056,13 @@ function CFFEventInit () {
           console.log('now-click');
           file = $('#import-textarea').val();
           console.log(file);
-          if ( file.match(GET_CONFIG_REG_EXP) != null ) {
+          if (file.match(GET_CONFIG_REG_EXP) != null) {
             text = file.match(GET_CONFIG_REG_EXP).join().replace(/,/g, '\n');
-            name = text.replace(GET_CONFIG_REG_EXP, '$5').replace(/\([A-Za-z0-9\s-.)]+\)/g, '').replace(/:.+/g, '').replace(/:/g,'');
+            name = text.replace(GET_CONFIG_REG_EXP, '$5').replace(/\([A-Za-z0-9\s-.)]+\)/g, '').replace(/:.+/g, '').replace(/:/g, '');
             configName = name.match(/.+/g);
             config = text.replace(GET_CONFIG_REG_EXP, '$1').match(/\w+/g);
-          } 
-          if ( file.match(/\$\w+\n/g) != null ) {
+          }
+          if (file.match(/\$\w+\n/g) != null) {
             configNull = file.match(/\$\w+\n/g).join().match(/\w+/g);
             for (let i = 0; i < configNull.length; i++) {
               config.unshift(configNull[i]);
@@ -1077,7 +1071,7 @@ function CFFEventInit () {
           }
 
           let allInOneConfig = config.join();
-  
+
           if ($codeSelectionValue == 'code128') {
             $('#barcode-display-1D').children().remove();
             $('#barcode-display-allInOne').children().remove();
@@ -1101,20 +1095,20 @@ function CFFEventInit () {
           }
           toggleModal('import');
         });
-  
+
       });
       reader.readAsText(myFile);
-        
+
     }
   });
   export_button.addEventListener('click', function () {
     let textBox = document.getElementById('export-textarea');
     let content = textBox.textContent;
-    let blob = new Blob( [content], 
+    let blob = new Blob([content],
       {
         type: "text/plain;character=utf-8"
       });
-      saveAs( blob, "DatalogicCCF.txt");
+    saveAs(blob, "DatalogicCCF.txt");
   });
 }
 
@@ -1199,7 +1193,7 @@ function makePDF() {
   //html2canvas($('#barcode-display-1D'), { 
   html2canvas(quotes, {
     imageTimeout: 2000,
-    removeContainer: true,  
+    removeContainer: true,
     onrendered: function (canvas) {
       //document.body.appendChild(canvas);
       var imgData = canvas.toDataURL('image/png');
@@ -1231,7 +1225,7 @@ function makePDF() {
 }
 
 var base64Img = null;
-imgToBase64("./css/images/logo.png", function (base64) {
+imgToBase64("../web/css/images/logo.png", function (base64) {
   base64Img = base64;
 });
 

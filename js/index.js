@@ -109,7 +109,7 @@ async function _parsingXML(xml) {
 function getXML() {
   $.ajax({
     type: 'GET',
-    url: "../conf/commonConfig.xml",
+    url: "./conf/commonConfig.xml",
     dataType: 'xml',
     success: async function (xml) {
       await _parsingXML(xml);
@@ -1225,7 +1225,7 @@ function makePDF() {
 }
 
 var base64Img = null;
-imgToBase64("../web/css/images/logo.png", function (base64) {
+imgToBase64("./css/images/logo.png", function (base64) {
   base64Img = base64;
 });
 

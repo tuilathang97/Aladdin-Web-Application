@@ -109,7 +109,7 @@ async function _parsingXML(xml) {
 function getXML() {
   $.ajax({
     type: 'GET',
-    url: "../web/conf/commonConfig.xml",
+    url: "../conf/commonConfig.xml",
     dataType: 'xml',
     success: async function (xml) {
       await _parsingXML(xml);

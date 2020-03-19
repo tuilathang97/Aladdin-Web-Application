@@ -112,6 +112,7 @@ function getXML() {
     url: "./conf/commonConfig.xml",
     dataType: 'xml',
     success: async function (xml) {
+      console.log(xml);
       await _parsingXML(xml);
       populatingSelectDropdown();
       // creatingTabElements("Symbolology-AIM-ID-Tab");
